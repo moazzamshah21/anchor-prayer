@@ -66,6 +66,8 @@ import CreateFeedPrayersScreen from '../screens/CreateFeedPrayersScreen';
 import MyGroupListScreen from '../screens/MyGroupListScreen';
 import MyPrayerDetailScreen from '../screens/MyPrayerDetailScreen';
 import { useSelector } from 'react-redux';
+import FeedPrayerDetailScreen from '../screens/FeedPrayerDetailScreen';
+import AddFeedPrayerScreen from '../screens/AddFeedPrayerScreen';
 
 const Stack = createNativeStackNavigator();
 const Drawer = createDrawerNavigator();
@@ -457,6 +459,16 @@ const StackNavigator = ({ isLogin = false }) => {
       <Stack.Screen
         name="PrayerListScreen"
         component={PrayerListScreen}
+        options={{ animationEnabled: false }}
+      />
+      <Stack.Screen
+        name="FeedPrayerDetailScreen"
+        component={FeedPrayerDetailScreen}
+        options={{ animationEnabled: false }}
+      />
+      <Stack.Screen
+        name="AddFeedPrayerScreen"
+        component={AddFeedPrayerScreen}
         options={{ animationEnabled: false }}
       />
       <Stack.Screen

@@ -131,7 +131,7 @@ const FeedsListScreen = ({navigation, route}) => {
               filteredFeeds.map((feed, index) => (
                 <TouchableOpacity
                   onPress={() => {
-                    navigation.navigate('ActivePrayerScreen', {  // Changed from ActivePrayerScreen to FeedDetailScreen
+                    navigation.navigate('FeedDetailScreen', {  // Changed from ActivePrayerScreen to FeedDetailScreen
                       feedId: feed._id,
                       feedData: feed
                     });

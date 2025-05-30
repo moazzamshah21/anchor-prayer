@@ -154,7 +154,9 @@ const HomeScreen = ({ navigation, route }) => {
               <View style={styles.HomeItemMainLayer}>
                 <TouchableOpacity
                   onPress={() => {
-                    navigation.navigate('AddPrayerScreen');
+                    navigation.navigate('AddPrayerScreen', {
+                      prayerType: 'personal' // Explicitly set the type
+                    });
                   }}>
                   <Image
                     source={require('../../assets/images/add-a-prayer-icon.png')}

@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState } from 'react';
 import {
   View,
   Text,
@@ -21,30 +21,40 @@ import * as commonAction from '../actions/Common/CommonAction';
 const { width } = Dimensions.get('window');
 
 const ConfirmPrayScreen = ({ navigation, route }) => {
-
   const { data } = route?.params;
   const dispatch = useDispatch();
   const [modalVisible, setModalVisible] = useState(false);
 
   const onPressNextBtn = async () => {
-    var payload = {
-      title: data?.title,
-      description: data?.desc,
-      imageBase64: data?.imagebase64,
-    };
-    var response = await PrayerService.AddPrayer(payload);
-    if (response?.success) {
-      setModalVisible(true);
-      dispatch(commonAction.fetchMyPrayers());
+    try {
+      const payload = {
+        title: data?.title,
+        description: data?.desc,
+        imageBase64: data?.imagebase64,
+        type: data?.type || 'personal', // Ensure type is included (default to personal)
+      };
+
+      const response = await PrayerService.AddPrayer(payload);
+      
+      if (response?.success) {
+        setModalVisible(true);
+        dispatch(commonAction.fetchMyPrayers());
+        showMessage({
+          message: response?.message,
+          type: 'success',
+        });
+      } else {
+        showMessage({
+          message: response?.message || 'Failed to add prayer',
+          type: 'danger',
+        });
+      }
+    } catch (error) {
       showMessage({
-        message: response?.message,
-        type: 'success',
-      });
-    } else {
-      showMessage({
-        message: response?.message,
+        message: 'An error occurred while adding prayer',
         type: 'danger',
       });
+      console.error('Error adding prayer:', error);
     }
   };
 
@@ -56,6 +66,14 @@ const ConfirmPrayScreen = ({ navigation, route }) => {
         showsVerticalScrollIndicator={false}>
         <View style={styles.MainContainer}>
           <View style={{ marginTop: 50 }}>
+            {/* Prayer Type Indicator (New Addition) */}
+            <View style={styles.contentContainerStyle}>
+              <Text style={styles.ImagesText}>
+                PRAYER TYPE: {data?.type?.toUpperCase() || 'PERSONAL'}
+              </Text>
+            </View>
+            <View style={styles.DividerView} />
+
             <TextInput
               placeholder="Enter prayer title..."
               placeholderTextColor={'#707070'}
@@ -70,15 +88,10 @@ const ConfirmPrayScreen = ({ navigation, route }) => {
             />
             <View style={styles.DividerView} />
 
-
-
             {data?.image != null && (
               <View style={styles.contentContainerStyle}>
                 <Text style={styles.ImagesText}>IMAGE</Text>
-                <View
-                  style={{
-                    marginTop: 20,
-                  }}>
+                <View style={{ marginTop: 20 }}>
                   <Image
                     source={{ uri: data?.image }}
                     style={{
@@ -95,16 +108,12 @@ const ConfirmPrayScreen = ({ navigation, route }) => {
               </View>
             )}
 
-
             <View style={styles.contentContainerStyle}>
-              <Text
-                style={[styles.ImagesText, { marginVertical: 0, marginTop: 15 }]}>
+              <Text style={[styles.ImagesText, { marginVertical: 0, marginTop: 15 }]}>
                 DESCRIPTION
               </Text>
               <TextInput
-                placeholder="Add a description to this prayer...
-You can even use hashtags: #family#pray
-etc."
+                placeholder="Add a description to this prayer..."
                 placeholderTextColor={'#707070'}
                 style={{
                   fontSize: 15,
@@ -115,14 +124,13 @@ etc."
                 }}
                 value={data?.desc}
                 editable={false}
+                multiline
               />
             </View>
             <View style={styles.DividerView} />
+
             <View style={styles.centeredViewSimple}>
-              <TouchableOpacity
-                onPress={() => {
-                  navigation.goBack();
-                }}>
+              <TouchableOpacity onPress={() => navigation.goBack()}>
                 <Image
                   source={require('../../assets/images/backButton.png')}
                   style={{
@@ -133,10 +141,7 @@ etc."
                   resizeMode="contain"
                 />
               </TouchableOpacity>
-              <TouchableOpacity
-                onPress={() => {
-                  onPressNextBtn();
-                }}>
+              <TouchableOpacity onPress={onPressNextBtn}>
                 <Image
                   source={require('../../assets/images/nextButton.png')}
                   style={{
@@ -179,9 +184,7 @@ etc."
                   title={`Continue`}
                   onPress={() => {
                     setModalVisible(false);
-                    navigation.navigate('Home', {
-                      name: '',
-                    });
+                    navigation.navigate('Home');
                   }}
                 />
               </View>

@@ -20,6 +20,8 @@ import {useIsFocused} from '@react-navigation/native';
 const {width, height} = Dimensions.get('window');
 
 const AddPrayerScreen = ({navigation, route}) => {
+  // Get prayer type from route params (default to 'personal')
+  const prayerType = route.params?.prayerType || 'personal';
   
   const [prayerTitle, setPrayerTitle] = useState('');
   const [PrayerDesc, setPrayerDesc] = useState('');
@@ -61,9 +63,7 @@ const AddPrayerScreen = ({navigation, route}) => {
         message: 'Please Enter Description',
         type: 'danger',
       });
-    } 
- 
-    else {
+    } else {
       setTimeout(() => {
         navigation.navigate('ConfirmPrayScreen', {
           data: {
@@ -72,6 +72,7 @@ const AddPrayerScreen = ({navigation, route}) => {
             image: selectedImage,
             imagebase64: selectedImageBase64,
             name: "",
+            type: prayerType // Include the prayer type in the data
           },
         });
       }, 500);
@@ -169,6 +170,7 @@ etc."
                 }}
                 value={PrayerDesc}
                 onChangeText={x => setPrayerDesc(x)}
+                multiline
               />
             </View>
             <View style={styles.DividerView} />
