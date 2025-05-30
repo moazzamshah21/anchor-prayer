@@ -1,0 +1,163 @@
+import {StyleSheet, Dimensions, StatusBar} from 'react-native';
+import {ThemeColors, ThemeFonts} from '../utils/Theme';
+const {width, height} = Dimensions.get('window');
+const statusBarHeight = Platform.OS === 'android' ? StatusBar.currentHeight : 0;
+
+export default StyleSheet.create({
+  ScrollViewContentContainerStyle: {
+    minHeight: height - statusBarHeight,
+    backgroundColor: ThemeColors?.WHITE,
+  },
+  MainContainer: {
+    flex: 1,
+    backgroundColor: ThemeColors.WHITE,
+  },
+  CreateAddBTnView: {
+    borderRadius: 10,
+    borderColor: '#6DA75B',
+    borderWidth: 1,
+    borderStyle: 'dashed',
+    paddingVertical: 15,
+  },
+  CreateAddBTnText: {
+    fontSize: 15,
+    textAlign: 'center',
+    fontFamily: ThemeFonts.REGULAR,
+    color: '#6DA75B',
+  },
+  SearchFieldView: {
+    borderRadius: 10,
+    paddingVertical: 6,
+    backgroundColor: '#F5F5F5',
+    paddingHorizontal: 15,
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginTop: 20,
+  },
+  FeaturedText: {
+    fontSize: 15,
+    fontFamily: ThemeFonts.REGULAR,
+    color: ThemeColors?.BLACK,
+  },
+  HealingText: {
+    fontSize: 15,
+    fontFamily: ThemeFonts.SEMI_BOLD,
+    color: ThemeColors?.BLACK,
+    textAlign: 'center',
+  },
+  GrayDivider: {
+    width: width,
+    height: 1,
+    backgroundColor: ThemeColors?.DARK_GRAY,
+  },
+  AnchorText: {
+    fontSize: 15,
+    fontFamily: ThemeFonts.MEDIUM,
+    color: ThemeColors?.BLACK,
+    paddingHorizontal: 20,
+    marginTop: 20,
+  },
+  LogoText: {
+    fontSize: 12,
+    textAlign: 'center',
+    fontFamily: ThemeFonts.MEDIUM,
+    color: ThemeColors.BLACK,
+  },
+  LoginDetailsHeading: {
+    fontSize: 20,
+    fontFamily: ThemeFonts.SEMI_BOLD,
+    color: ThemeColors.BLACK,
+    textAlign: 'center',
+  },
+  TextInputStyle: {
+    width: width - 50,
+    height: 51,
+    borderRadius: 10,
+    backgroundColor: '#F5F5F5',
+    alignSelf: 'center',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  LoginButtonStyle: {
+    width: width - 50,
+    height: 51,
+    borderRadius: 10,
+    backgroundColor: '#6DA75B',
+    alignSelf: 'center',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  LoginBtnTExt: {
+    fontSize: 15,
+    fontFamily: ThemeFonts.MEDIUM,
+    color: ThemeColors.WHITE,
+    textAlign: 'center',
+  },
+  AllPrayersItem: {
+    backgroundColor: 'transparent',
+    width: width,
+    height: 53,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingHorizontal: 20,
+  },
+  EmptyRoundView: {
+    borderRadius: 25,
+    width: 26,
+    height: 26,
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderColor: ThemeColors?.DARK_GRAY,
+    borderWidth: 1,
+  },
+  HeadingAllPrayer: {
+    fontSize: 15,
+    fontFamily: ThemeFonts.REGULAR,
+    color: ThemeColors.DARK_GRAY,
+  },
+  AllMyPrayersText: {
+    fontSize: 10,
+    fontFamily: ThemeFonts.MEDIUM,
+    color: ThemeColors.DARK_GRAY,
+    marginTop: 10,
+  },
+  AllPrayersItemTwo: {
+    backgroundColor: '#C3E7BE',
+    width: width - 30,
+    height: 60,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    alignSelf: 'center',
+    paddingHorizontal: 20,
+    borderLeftWidth: 5,
+    borderLeftColor: '#6DA75B',
+    borderRadius: 30,
+    margin: 10,
+    elevation: 8, 
+ 
+  },
+  MinuteText: {
+    fontSize: 14,
+    fontFamily: ThemeFonts.SEMI_BOLD,
+    color: ThemeColors.DARK_GRAY,
+    textAlign: 'center',
+  },
+  PrayBtn: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginBottom: 20,
+  },
+  emptyContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: ThemeColors.WHITE,
+  },
+  emptyText: {
+    fontSize: 18,
+    fontFamily: ThemeFonts.REGULAR,
+    color: ThemeColors.BLACK,
+  },
+});
