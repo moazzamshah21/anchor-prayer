@@ -1,3 +1,4 @@
+// MyPrayerScreen.js
 import React, { useState, useEffect } from 'react';
 import {
   View,
@@ -121,25 +122,22 @@ const MyPrayerScreen = ({ navigation, route }) => {
                 </ImageBackground>
               </View>
               <Text style={styles.ActiveHeading}>My Prayers</Text>
-              {/* <Text style={styles.ActiveHeadingSub}>APPLICATION</Text> */}
+              <Text style={styles.ActiveHeadingSub}>PERSONAsL</Text>
               <View style={{ marginBottom: 10 }}>
-                {myPrayers?.map((item, index) => {
-                  return (
-                    <MyPrayerItem
-                      item={item}
-                      index={index}
-                      navigation={navigation}
-                      onPressPray={(index) => {
-                        navigation.navigate("MyPrayerDetailScreen", { data: myPrayers, index: index, isEditable: true })
-                      }}
-                      onArchiveSuccess={(index) => {
-                        dispatch(commonAction.fetchMyPrayers());
-                        dispatch(commonAction.fetchMyAchivedPrayers());
-                        dispatch(commonAction.fetchMyAnsweredPrayers());
-                      }}
-                    />
-                  );
-                })}
+              {myPrayers?.map((item, index) => {
+        return (
+          <MyPrayerItem
+            item={item}
+            index={index}
+            navigation={navigation}
+            onArchiveSuccess={() => {
+              dispatch(commonAction.fetchMyPrayers());
+              dispatch(commonAction.fetchMyAchivedPrayers());
+              dispatch(commonAction.fetchMyAnsweredPrayers());
+            }}
+          />
+        );
+      })}
               </View>
             </View>
             <View style={{ alignItems: 'center', marginBottom: 10 }}>
@@ -148,6 +146,8 @@ const MyPrayerScreen = ({ navigation, route }) => {
               </Text>
             </View>
           </ScrollView>
+
+          
         )
       }
     </React.Fragment>

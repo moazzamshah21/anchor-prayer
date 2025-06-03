@@ -2,187 +2,108 @@ import React, {useState, useEffect} from 'react';
 import {
   View,
   Text,
-  TouchableOpacity,
   ScrollView,
   FlatList,
-  ActivityIndicator,
-  StyleSheet,
-  RefreshControl,
-  Dimensions
+  Dimensions,
+  ActivityIndicator
 } from 'react-native';
+import styles from '../styles/GroupListStyle';
 import BackHeader from '../components/BackHeader';
-import GroupListItem from '../components/GroupListItem';
+import MyGroupListItem from '../components/MyGroupListItem';
 import GroupService from '../services/Group/GroupService';
 import {showMessage} from 'react-native-flash-message';
+import {ThemeColors} from '../utils/Theme';
 
 const {width} = Dimensions.get('window');
 
 const MyGroupListScreen = ({navigation, route}) => {
-  const [groupList, setGroupList] = useState([]);
+  const [joinedGroups, setJoinedGroups] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [refreshing, setRefreshing] = useState(false);
 
-  const loadGroups = async () => {
+  const fetchJoinedGroups = async () => {
     try {
       setLoading(true);
-      const response = await GroupService.getAllGroupList();
+      const response = await GroupService.MyGroups();
       
       if (response?.success) {
-        setGroupList(response.data || []);
+        const formattedGroups = Array.isArray(response.data) ? 
+          response.data.map(group => ({
+            ...group,
+            activeMembersCount: group['activeMember#Count'] || group.activeMembersCount
+          })) : [];
+        
+        setJoinedGroups(formattedGroups);
       } else {
         showMessage({
-          message: response?.message || 'Failed to load groups',
+          message: response?.message || 'Failed to load joined groups',
           type: 'danger',
         });
+        setJoinedGroups([]);
       }
     } catch (error) {
-      console.error('Group load error:', error);
       showMessage({
-        message: 'An error occurred while loading groups',
+        message: 'An error occurred while fetching groups',
         type: 'danger',
       });
+      console.error('Error fetching joined groups:', error);
+      setJoinedGroups([]);
     } finally {
       setLoading(false);
-      setRefreshing(false);
     }
   };
 
   useEffect(() => {
-    loadGroups();
+    fetchJoinedGroups();
   }, []);
 
-  const handleRefresh = () => {
-    setRefreshing(true);
-    loadGroups();
-  };
-
-  const renderGroupList = ({item}) => (
-    <GroupListItem 
-      navigation={navigation} 
-      item={item}
-      onRefresh={handleRefresh}
-    />
-  );
-
-  const handleCreateGroup = () => {
-    navigation.navigate('CreateGroupScreen');
+  const renderGroupItem = ({item, index}) => {
+    return <MyGroupListItem item={item} navigation={navigation} key={index} />;
   };
 
   return (
-    <View style={styles.container}>
-      <BackHeader navigation={navigation} title="My Groups" />
+    <>
+      <BackHeader navigation={navigation} title="My Joined Groups" />
       
       <ScrollView
-        contentContainerStyle={styles.scrollContainer}
-        refreshControl={
-          <RefreshControl
-            refreshing={refreshing}
-            onRefresh={handleRefresh}
-          />
-        }>
-        <View style={styles.content}>
-          <Text style={styles.heading}>My Groups</Text>
-
-          {loading && groupList.length === 0 ? (
-            <View style={styles.loadingContainer}>
-              <ActivityIndicator size="large" />
-              <Text style={styles.loadingText}>Loading groups...</Text>
+        contentContainerStyle={styles.ScrollViewContentContainerStyle}
+        showsVerticalScrollIndicator={false}>
+        <View style={styles.MainContainer}>
+          <View style={{marginTop: 25}}>
+            <Text style={styles.LoginDetailsHeading}>My Groups</Text>
+          </View>
+          
+          {loading ? (
+            <View style={{padding: 20, alignItems: 'center'}}>
+              <ActivityIndicator size="large" color={ThemeColors.PRIMARY} />
+              <Text style={{marginTop: 10}}>Loading your groups...</Text>
             </View>
-          ) : groupList.length === 0 ? (
-            <View style={styles.emptyState}>
-              <Text style={styles.emptyText}>No groups available</Text>
-              <TouchableOpacity
-                onPress={handleCreateGroup}
-                style={styles.createButton}>
-                <Text style={styles.createButtonText}>Create A Group</Text>
-              </TouchableOpacity>
+          ) : joinedGroups.length === 0 ? (
+            <View style={{padding: 20, alignItems: 'center'}}>
+              <Text>You haven't joined any groups yet.</Text>
             </View>
           ) : (
-            <FlatList
-              data={groupList}
-              renderItem={renderGroupList}
-              keyExtractor={item => item._id}
-              scrollEnabled={false}
-              contentContainerStyle={styles.listContainer}
-              style={{width: width, alignSelf: 'center'}}
-            />
+            <View style={{marginTop: 20}}>
+              <FlatList
+                contentContainerStyle={{paddingHorizontal: 15}}
+                data={joinedGroups}
+                renderItem={renderGroupItem}
+                keyExtractor={item => item._id}
+                showsVerticalScrollIndicator={false}
+                showsHorizontalScrollIndicator={false}
+                style={{width: width, alignSelf: 'center'}}
+              />
+            </View>
           )}
         </View>
 
-        <View style={styles.footer}>
-          <Text style={styles.footerText}>
+        <View style={{alignItems: 'center', marginBottom: 10}}>
+          <Text style={styles.LogoText}>
             Designed by:{'\n'}digitalsoftwarelabs.com
           </Text>
         </View>
       </ScrollView>
-    </View>
+    </>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-  },
-  scrollContainer: {
-    flexGrow: 1,
-  },
-  content: {
-    padding: 20,
-  },
-  heading: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    marginBottom: 20,
-    color: '#333',
-    textAlign: 'center',
-  },
-  loadingContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginTop: 40,
-  },
-  loadingText: {
-    marginTop: 10,
-    fontSize: 16,
-    color: '#666',
-  },
-  emptyState: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginTop: 40,
-    padding: 20,
-  },
-  emptyText: {
-    fontSize: 16,
-    color: '#666',
-    marginBottom: 20,
-    textAlign: 'center',
-  },
-  createButton: {
-    backgroundColor: '#007AFF',
-    paddingVertical: 12,
-    paddingHorizontal: 24,
-    borderRadius: 8,
-  },
-  createButtonText: {
-    color: 'white',
-    fontWeight: 'bold',
-    fontSize: 16,
-  },
-  listContainer: {
-    paddingBottom: 20,
-  },
-  footer: {
-    alignItems: 'center',
-    marginBottom: 20,
-  },
-  footerText: {
-    textAlign: 'center',
-    color: '#666',
-  },
-});
 
 export default MyGroupListScreen;

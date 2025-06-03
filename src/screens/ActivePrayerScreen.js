@@ -12,7 +12,7 @@ import HeaderBlack from '../components/HeaderBlack';
 import PrayerService from '../services/Prayer/PrayerService';
 import {showMessage} from 'react-native-flash-message';
 import ActivePrayerItem from '../components/ActivePrayerItem';
-import RestClient from '../services/RestClient'; // Import your RestClient
+import RestClient from '../services/RestClient';
 
 const {width} = Dimensions.get('window');
 
@@ -21,15 +21,25 @@ const ActivePrayerScreen = ({navigation, route}) => {
   const [prayers, setPrayers] = useState([]);
   const [feedImages, setFeedImages] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [page, setPage] = useState(1);
+  const [limit, setLimit] = useState(10);
 
   const fetchData = async () => {
     try {
       setLoading(true);
       
-      // Fetch prayers
-      const prayerResponse = await PrayerService.GetPrayersByType(name, 1, 10);
+      // Fetch personal prayers with pagination
+      const prayerResponse = await PrayerService.GetPrayersByType(
+        'personal', // Hardcoded to fetch personal prayers
+        page,
+        limit
+      );
+      
       if (prayerResponse?.success) {
-        setPrayers(prayerResponse?.data);
+        // If page is 1, replace the prayers, otherwise append to existing prayers
+        setPrayers(prevPrayers => 
+          page === 1 ? prayerResponse?.data : [...prevPrayers, ...prayerResponse?.data]
+        );
       } else {
         showMessage({
           message: prayerResponse?.message || 'Failed to load prayers',
@@ -57,11 +67,17 @@ const ActivePrayerScreen = ({navigation, route}) => {
     }
   };
 
+  const loadMorePrayers = () => {
+    if (!loading) {
+      setPage(prevPage => prevPage + 1);
+    }
+  };
+
   useEffect(() => {
     fetchData();
-  }, []);
+  }, [page]); // Refetch when page changes
 
-  if (loading) {
+  if (loading && page === 1) {
     return (
       <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
         <ActivityIndicator size="large" />
@@ -73,7 +89,7 @@ const ActivePrayerScreen = ({navigation, route}) => {
     <View style={{flex: 1}}>
       <HeaderBlack
         lessThenIcon
-        Name={'ACTIVE PRAYERS'}
+        Name={'PERSONAL PRAYERS'} // Changed header title
         navigation={navigation}
         noModal={true}
       />
@@ -83,7 +99,15 @@ const ActivePrayerScreen = ({navigation, route}) => {
           paddingBottom: 20,
         }}
         style={{flex: 1}}
-        showsVerticalScrollIndicator={false}>
+        showsVerticalScrollIndicator={false}
+        onScroll={({nativeEvent}) => {
+          // Implement infinite scroll
+          if (isCloseToBottom(nativeEvent)) {
+            loadMorePrayers();
+          }
+        }}
+        scrollEventThrottle={400}
+      >
         <View style={styles.MainContainer}>
           {/* Feed Image Banner - Using the first feed image */}
           {feedImages.length > 0 && (
@@ -110,22 +134,35 @@ const ActivePrayerScreen = ({navigation, route}) => {
             />
           </View>
           
-          <Text style={styles.ActiveHeading}>Active Prayers</Text>
+          <Text style={styles.ActiveHeading}>Personal Prayers</Text>
           {/* <Text style={styles.ActiveHeadingSub}>APPLICATION</Text> */}
 
           <View style={{width: '100%'}}>
             {prayers?.map((item, index) => (
               <ActivePrayerItem
-                key={index}
+                key={`${item._id}-${index}`} // Better key using unique ID
                 item={item}
                 index={index}
                 navigation={navigation}
               />
             ))}
           </View>
+
+          {loading && page > 1 && (
+            <ActivityIndicator size="small" style={{marginVertical: 10}} />
+          )}
         </View>
       </ScrollView>
     </View>
+  );
+};
+
+// Helper function to check if scroll is near bottom
+const isCloseToBottom = ({layoutMeasurement, contentOffset, contentSize}) => {
+  const paddingToBottom = 20;
+  return (
+    layoutMeasurement.height + contentOffset.y >=
+    contentSize.height - paddingToBottom
   );
 };
 

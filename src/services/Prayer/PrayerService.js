@@ -1,3 +1,4 @@
+// MyPrayerService.js
 import RestClient from '../RestClient';
 
 const AddPrayer = payload => {
@@ -29,7 +30,7 @@ const PlayAgainPrayer = payload => {
 };
 
 const GetMyPrayers = (page = 1, limit = 10) => {
-  return RestClient.Get(`prayer/get-my-prayers?page=${page}&limit=${limit}`);
+  return RestClient.Get(`prayer/get-my-prayers?type=personal&page=${page}&limit=${limit}`);
 };
 
 const GetMyAnsweredPrayers = (page = 1, limit = 10) => {

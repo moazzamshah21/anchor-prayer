@@ -24,6 +24,8 @@ const FeedDetailScreen = ({navigation, route}) => {
   const [loading, setLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
+  const [likeLoading, setLikeLoading] = useState({});
+  const [commentLoading, setCommentLoading] = useState({});
 
   const fetchFeedDetails = async () => {
     try {
@@ -85,6 +87,96 @@ const FeedDetailScreen = ({navigation, route}) => {
       }
     } catch (error) {
       console.error('Error adding prayer:', error);
+    }
+  };
+
+  const handleLikePrayer = async (prayerId) => {
+    try {
+      setLikeLoading(prev => ({...prev, [prayerId]: true}));
+      const response = await RestClient.Post('/prayer/like', {
+        prayerId: prayerId
+      });
+      
+      if (response.success) {
+        setPrayers(prayers.map(prayer => {
+          if (prayer._id === prayerId) {
+            return {
+              ...prayer,
+              isLiked: true,
+              likeCount: prayer.likeCount + 1
+            };
+          }
+          return prayer;
+        }));
+      }
+    } catch (error) {
+      console.error('Error liking prayer:', error);
+    } finally {
+      setLikeLoading(prev => ({...prev, [prayerId]: false}));
+    }
+  };
+  
+  const handleDislikePrayer = async (prayerId) => {
+    try {
+      setLikeLoading(prev => ({...prev, [prayerId]: true}));
+      const response = await RestClient.Post('/prayer/dislike', {
+        prayerId: prayerId
+      });
+      
+      if (response.success) {
+        setPrayers(prayers.map(prayer => {
+          if (prayer._id === prayerId) {
+            return {
+              ...prayer,
+              isLiked: false,
+              likeCount: Math.max(0, prayer.likeCount - 1)
+            };
+          }
+          return prayer;
+        }));
+      }
+    } catch (error) {
+      console.error('Error disliking prayer:', error);
+    } finally {
+      setLikeLoading(prev => ({...prev, [prayerId]: false}));
+    }
+  };
+
+  const handleLikeDislike = (prayerId, isLiked) => {
+    if (isLiked) {
+      handleDislikePrayer(prayerId);
+    } else {
+      handleLikePrayer(prayerId);
+    }
+  };
+
+  const handleAddComment = async (prayerId, commentText) => {
+    try {
+      setCommentLoading(prev => ({...prev, [prayerId]: true}));
+      const response = await RestClient.Post('/prayer/add-comment', {
+        prayerId: prayerId,
+        comment: commentText
+      });
+      
+      if (response.success) {
+        setPrayers(prayers.map(prayer => {
+          if (prayer._id === prayerId) {
+            return {
+              ...prayer,
+              commentCount: prayer.commentCount + 1,
+              comments: [...(prayer.comments || []), response.data.comment]
+            };
+          }
+          return prayer;
+        }));
+        return true;
+      }
+      return false;
+    } catch (error) {
+      console.error('Error adding comment:', error);
+      return false;
+    } finally {
+      setCommentLoading(prev => ({...prev, [prayerId]: false}));
     }
   };
 
@@ -164,7 +256,9 @@ const FeedDetailScreen = ({navigation, route}) => {
                     comments: prayer.comments,
                     isLiked: prayer.isLiked
                   },
-                  title: feed.title
+                  title: feed.title,
+                  onAddComment: (commentText) => handleAddComment(prayer._id, commentText),
+                  onLikeDislike: () => handleLikeDislike(prayer._id, prayer.isLiked)
                 })}
                 activeOpacity={0.8}
               >
@@ -184,11 +278,12 @@ const FeedDetailScreen = ({navigation, route}) => {
                   </View>
                   <View style={{alignItems: 'center', flexDirection: 'row'}}>
                     <TouchableOpacity
-                      onPress={() => {
-                        // LikeAndDislikePrayer(prayer?._id, isHearted);
-                      }}
-                      style={styles.actionButton}>
-                      {prayer?.isLiked ? (
+                      onPress={() => !likeLoading[prayer._id] && handleLikeDislike(prayer._id, prayer.isLiked)}
+                      style={styles.actionButton}
+                      disabled={likeLoading[prayer._id]}>
+                      {likeLoading[prayer._id] ? (
+                        <ActivityIndicator size="small" color="#D7443E" />
+                      ) : prayer.isLiked ? (
                         <AntDesign name="heart" style={{color: '#D7443E'}} size={20} />
                       ) : (
                         <Image
@@ -214,25 +309,47 @@ const FeedDetailScreen = ({navigation, route}) => {
                           comments: prayer.comments,
                           isLiked: prayer.isLiked
                         },
-                        title: feed.title
+                        title: feed.title,
+                        onAddComment: (commentText) => handleAddComment(prayer._id, commentText),
+                        onLikeDislike: () => handleLikeDislike(prayer._id, prayer.isLiked)
                       })}
                       style={[styles.actionButton, {marginLeft: 10}]}>
-                      <Image
-                        source={require('../../assets/images/message1.png')}
-                        style={styles.messageIcon}
-                        resizeMode="contain"
-                      />
+                      {commentLoading[prayer._id] ? (
+                        <ActivityIndicator size="small" color="#000" />
+                      ) : (
+                        <Image
+                          source={require('../../assets/images/message1.png')}
+                          style={styles.messageIcon}
+                          resizeMode="contain"
+                        />
+                      )}
                     </TouchableOpacity>
                   </View>
                   <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                    <TouchableOpacity>
-                      <ImageBackground
-                        source={require('../../assets/images/bggreen.png')}
-                        style={styles.prayButtonBackground}
-                        resizeMode="contain">
-                        <Text style={styles.prayButtonText}>Pray</Text>
-                      </ImageBackground>
-                    </TouchableOpacity>
+                  <TouchableOpacity 
+                    onPress={() => navigation.navigate('FeedPrayerDetailScreen', {
+                      prayerData: {
+                        id: prayer._id,
+                        userId: prayer.userId,
+                        name: prayer.name,
+                        email: prayer.email,
+                        title: prayer.title,
+                        imageUrl: prayer.imageUrl,
+                        description: prayer.description,
+                        likeCount: prayer.likeCount,
+                        commentCount: prayer.commentCount,
+                        comments: prayer.comments,
+                        isLiked: prayer.isLiked
+                    }})}
+                  > 
+                    <ImageBackground
+                      source={require('../../assets/images/bggreen.png')}
+                      style={styles.prayButtonBackground}
+                      resizeMode="contain">
+                      <Text style={styles.prayButtonText}>Pray</Text>
+                    </ImageBackground>
+                  </TouchableOpacity>
+
                   </View>
                 </View>
               </TouchableOpacity>
@@ -253,18 +370,18 @@ const FeedDetailScreen = ({navigation, route}) => {
 
       {/* Add Prayer Button */}
       <TouchableOpacity
-      style={styles.addButton}
-      onPress={() => navigation.navigate('AddFeedPrayerScreen', {
-        feedId,
-        feedData: feed, // Send the entire feed object
-        onAddPrayer: handleAddPrayer
-      })}>
-      <Image
-        source={require('../../assets/images/add-a-prayer-icon.png')}
-        style={{ width: 120, height: 120 }}
-        resizeMode="contain"
-      />
-    </TouchableOpacity>
+        style={styles.addButton}
+        onPress={() => navigation.navigate('AddFeedPrayerScreen', {
+          feedId,
+          feedData: feed, // Send the entire feed object
+          onAddPrayer: handleAddPrayer
+        })}>
+        <Image
+          source={require('../../assets/images/add-a-prayer-icon.png')}
+          style={{ width: 120, height: 120 }}
+          resizeMode="contain"
+        />
+      </TouchableOpacity>
     </React.Fragment>
   );
 };

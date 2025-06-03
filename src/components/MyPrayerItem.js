@@ -2,44 +2,64 @@ import {
   Dimensions,
   Image,
   ImageBackground,
-  ScrollView,
   StyleSheet,
   Text,
-  TextInput,
   TouchableOpacity,
   View,
 } from 'react-native';
-import React, { createRef, useState } from 'react';
+import React from 'react';
 import PrayerService from '../services/Prayer/PrayerService';
 import { showMessage } from 'react-native-flash-message';
 import { ThemeColors, ThemeFonts } from '../utils/Theme';
-import AntDesign from 'react-native-vector-icons/AntDesign';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import Feather from 'react-native-vector-icons/Feather';
+
 const { width } = Dimensions.get('window');
 
 const MyPrayerItem = ({ item, index, navigation, onPressPray, onArchiveSuccess }) => {
-
   const handleOnPressArchivePrayer = async (id) => {
-    var payload = {
-      id: id,
-    };
-    var response = await PrayerService.ArchivePrayer(payload);
-    if (response?.success) {
-      if (onArchiveSuccess) {
-        onArchiveSuccess()
+    try {
+      const payload = { id: id };
+      const response = await PrayerService.ArchivePrayer(payload);
+      
+      if (response?.success) {
+        showMessage({
+          message: 'Prayer archived successfully',
+          type: 'success',
+        });
+        onArchiveSuccess?.(); // Call the success callback
+      } else {
+        showMessage({
+          message: response?.message || 'Failed to archive prayer',
+          type: 'danger',
+        });
       }
-    } else {
+    } catch (error) {
       showMessage({
-        message: response?.message,
+        message: 'Error archiving prayer',
         type: 'danger',
       });
+      console.error('Archive error:', error);
     }
+  };
+  const handlePressPray = () => {
+    console.log('Prayer Data:', item); // Verify the item has description
+    navigation.navigate("MyPrayerDetailScreen", { 
+      prayerData: {
+        _id: item._id,
+        title: item.title,
+        body: item.body,
+        description: item.description, // Make sure this exists
+        isAnswered: item.isAnswered,
+        likeCount: item.likeCount
+        // include any other needed fields
+      },
+      isEditable: true 
+    });
   };
 
   return (
     <View
-      key={`index-${index}`}
       style={{
         borderRadius: 15,
         borderColor: ThemeColors?.BLACK,
@@ -55,67 +75,33 @@ const MyPrayerItem = ({ item, index, navigation, onPressPray, onArchiveSuccess }
       <View style={{ justifyContent: 'center', flexGrow: 1 }}>
         <Text style={styles.HelloText}>{item?.title}</Text>
         <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-          <Text style={styles.ViewedText} >
+          <Text style={styles.ViewedText}>
             <Image
               source={require('../../assets/images/like.png')}
-              style={{
-                width: 10,
-                height: 10,
-                marginLeft: -2,
-              }}
+              style={styles.likeIcon}
               resizeMode="contain"
             />
-            <Text style={styles.ViewedText}>
-              {' '}{item?.likeCount} people like this
-            </Text>
+            {' '}{item?.likeCount} people like this
           </Text>
         </View>
       </View>
       <View style={{ alignItems: 'center', flexDirection: 'row' }}>
         <TouchableOpacity
-          onPress={async () => {
-            await handleOnPressArchivePrayer(item?._id);
-          }}
-          style={{
-            backgroundColor: '#F0EFEF',
-            borderRadius: 20,
-            width: 35,
-            height: 35,
-            alignItems: 'center',
-            justifyContent: 'center',
-          }}>
+          onPress={() => handleOnPressArchivePrayer(item?._id)}
+          style={styles.iconButton}>
           <MaterialIcons name="archive" style={{ color: '#000' }} size={20} />
         </TouchableOpacity>
         <TouchableOpacity
-          onPress={() => {
-            navigation.navigate("EditPrayerScreen", { id: item?._id })
-          }}
-          style={{
-            backgroundColor: '#F0EFEF',
-            borderRadius: 20,
-            width: 35,
-            height: 35,
-            alignItems: 'center',
-            justifyContent: 'center',
-            marginLeft: 10,
-          }}>
+          onPress={() => navigation.navigate("EditPrayerScreen", { id: item?._id })}
+          style={[styles.iconButton, { marginLeft: 10 }]}>
           <Feather name="edit" style={{ color: '#000' }} size={20} />
         </TouchableOpacity>
       </View>
       <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-        <TouchableOpacity onPress={() => {
-          if (onPressPray) {
-            onPressPray(index)
-          }
-        }}>
+        <TouchableOpacity onPress={handlePressPray}>
           <ImageBackground
             source={require('../../assets/images/bggreen.png')}
-            style={{
-              width: 85,
-              height: 85,
-              alignItems: 'center',
-              justifyContent: 'center',
-            }}
+            style={styles.prayButtonBackground}
             resizeMode="contain">
             <Text style={styles.ActivePrayText}>Pray</Text>
           </ImageBackground>
@@ -124,8 +110,6 @@ const MyPrayerItem = ({ item, index, navigation, onPressPray, onArchiveSuccess }
     </View>
   );
 };
-
-export default MyPrayerItem;
 
 const styles = StyleSheet.create({
   HelloText: {
@@ -144,75 +128,25 @@ const styles = StyleSheet.create({
     fontFamily: ThemeFonts.MEDIUM,
     textAlign: 'center',
   },
-  NumberText: {
-    fontSize: 12,
-    color: '#5A5957',
-    fontFamily: ThemeFonts.MEDIUM,
-    marginTop: 4,
-    marginLeft: 5,
+  likeIcon: {
+    width: 10,
+    height: 10,
+    marginLeft: -2,
   },
-  BlackDivider: {
-    height: 2,
-    width: width,
-    backgroundColor: ThemeColors?.DARK_GRAY,
-    alignSelf: 'center',
-  },
-  TextContainerStyle: {
-    marginLeft: 5,
-  },
-  TextInputStyle: {
+  iconButton: {
+    backgroundColor: '#F0EFEF',
     borderRadius: 20,
-    borderColor: ThemeColors?.BLACK,
-    borderWidth: 1,
-    height: 35,
-    flexGrow: 1,
-    paddingHorizontal: 15,
-    marginLeft: 10,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-  },
-  SmileyView: {
-    borderRadius: 35,
     width: 35,
     height: 35,
-    backgroundColor: '#DDCFCF',
     alignItems: 'center',
     justifyContent: 'center',
   },
-  ImageCenteredView: {
-    borderRadius: 50,
-    width: 52,
-    height: 52,
+  prayButtonBackground: {
+    width: 85,
+    height: 85,
     alignItems: 'center',
     justifyContent: 'center',
-    borderColor: ThemeColors?.BLACK,
-    borderWidth: 1,
-  },
-  GrayBox: {
-    width: 215,
-    height: 62,
-    borderRadius: 10,
-    backgroundColor: '#E8E4E4',
-    paddingHorizontal: 15,
-    paddingVertical: 10,
-    marginLeft: 12,
-  },
-  likeTextBtn: {
-    fontSize: 8,
-    color: '#5A5957',
-    fontFamily: ThemeFonts.MEDIUM,
-    marginLeft: 10,
-  },
-  CommentBoxText: {
-    fontSize: 10,
-    color: '#5A5957',
-    fontFamily: ThemeFonts.MEDIUM,
-    width: '95%',
-  },
-  NameHeading: {
-    fontSize: 12,
-    color: ThemeColors.BLACK,
-    fontFamily: ThemeFonts.BOLD,
   },
 });
+
+export default MyPrayerItem;

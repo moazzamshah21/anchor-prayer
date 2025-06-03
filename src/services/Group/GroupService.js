@@ -33,8 +33,16 @@ const DisLikeGroup = payload => {
 };
 
 const Approve = payload => {
-  return RestClient.Post(`group/dislike`, payload);
+  return RestClient.Post('group/approve-request', {
+    groupId: payload.groupId,
+    requesterId: payload.requesterId
+  });
 };
+
+const MyGroups = () => {
+  return RestClient.Get('group/all-joined-list');
+};
+
 
 export default {
   CreateGroup,
@@ -46,4 +54,5 @@ export default {
   LikeGroup,
   DisLikeGroup,
   Approve,
+  MyGroups,
 };

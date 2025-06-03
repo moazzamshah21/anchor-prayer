@@ -178,4 +178,20 @@ export default StyleSheet.create({
     color: ThemeColors.WHITE,
     fontFamily: ThemeFonts.REGULAR,
   },
+  prayerBody: {
+    color: 'white',
+    fontSize: 18,
+    textAlign: 'center',
+    marginHorizontal: 20,
+    marginTop: 20,
+    lineHeight: 24,
+  },
+// In your PrayerDetailStyle.js
+prayerDescription: {
+  fontSize: 14,
+  marginTop: 10,
+  textAlign: 'center',
+  paddingHorizontal: 20,
+  lineHeight: 20,
+},
 });

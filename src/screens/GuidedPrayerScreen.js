@@ -41,7 +41,7 @@ const GuidedPrayerScreen = ({ navigation }) => {
         showsVerticalScrollIndicator={false}>
         <View style={styles.MainContainer}>
           <View style={styles.PageTitleView}>
-            <Text style={styles.PageMainTitle}>Guided Prayers</Text>
+            {/* <Text style={styles.PageMainTitle}>Guided Prayers</Text> */}
           </View>
           
           {itemPairs.map((pair, index) => (

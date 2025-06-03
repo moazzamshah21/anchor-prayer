@@ -48,13 +48,13 @@ const GroupScreen = ({navigation, route}) => {
               style={styles.ButtonView}>
               <Text style={styles.ButtonText}>Login To A Group</Text>
             </TouchableOpacity> */}
-            {/* <TouchableOpacity
+            <TouchableOpacity
               onPress={() => {
                 navigation.navigate('GroupListScreen');
               }}
               style={styles.ButtonView}>
               <Text style={styles.ButtonText}>Join A Group</Text>
-            </TouchableOpacity> */}
+            </TouchableOpacity>
             <TouchableOpacity
               onPress={() => {
                 navigation.navigate('MyGroupListScreen');

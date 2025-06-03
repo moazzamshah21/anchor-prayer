@@ -6,44 +6,20 @@ import {
   ImageBackground, 
   Image, 
   Dimensions,
-  Animated,
-  ActivityIndicator
+  Animated
 } from 'react-native';
 import styles from '../styles/PrayerDetailStyle';
 import HeaderBlack from '../components/HeaderBlack';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import Feather from 'react-native-vector-icons/Feather';
-import PrayerService from '../services/Prayer/PrayerService';
-import { showMessage } from 'react-native-flash-message';
-import { useDispatch } from 'react-redux';
-import * as commonAction from '../actions/Common/CommonAction';
 
 const { width } = Dimensions.get('window');
 
-const MyPrayerDetailScreen = ({ navigation, route }) => {
-  const [isLoading, setIsLoading] = useState(false);
+const GroupPrayerDetailScreen = ({ navigation, route }) => {
+  const { prayerData, title } = route.params;
   const [isVisible, setIsVisible] = useState(false);
   const headerAnim = useRef(new Animated.Value(-100)).current;
   const footerAnim = useRef(new Animated.Value(100)).current;
-  const dispatch = useDispatch();
-
-  // Check for valid params
-  if (!route.params || !route.params.prayerData) {
-    return (
-      <View style={styles.errorContainer}>
-        <Text style={styles.errorText}>Prayer data not available</Text>
-        <TouchableOpacity 
-          style={styles.backButton}
-          onPress={() => navigation.goBack()}
-        >
-          <Text style={styles.backButtonText}>Go Back</Text>
-        </TouchableOpacity>
-      </View>
-    );
-  }
-
-  const { prayerData, isEditable } = route.params;
 
   useEffect(() => {
     if (isVisible) {
@@ -78,54 +54,6 @@ const MyPrayerDetailScreen = ({ navigation, route }) => {
     navigation.goBack();
   };
 
-  const onPressAnswered = async () => {
-    if (!prayerData?._id) {
-      showMessage({
-        message: 'Invalid prayer data',
-        type: 'danger',
-      });
-      return;
-    }
-
-    try {
-      setIsLoading(true);
-      var payload = {
-        id: prayerData._id,
-      };
-      var response = await PrayerService.AnsweredPrayer(payload);
-      if (response?.success) {
-        showMessage({
-          message: response?.message || 'Prayer marked as answered',
-          type: 'success',
-        });
-        dispatch(commonAction.fetchMyPrayers());
-        dispatch(commonAction.fetchMyAchivedPrayers());
-        dispatch(commonAction.fetchMyAnsweredPrayers());
-        navigation.goBack();
-      } else {
-        showMessage({
-          message: response?.message || 'Failed to mark prayer as answered',
-          type: 'danger',
-        });
-      }
-    } catch (error) {
-      showMessage({
-        message: 'An error occurred',
-        type: 'danger',
-      });
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  if (isLoading) {
-    return (
-      <View style={styles.loadingContainer}>
-        <ActivityIndicator size="large" color="#0000ff" />
-      </View>
-    );
-  }
-
   return (
     <React.Fragment>
       <View style={styles.MainContainer}>
@@ -144,13 +72,8 @@ const MyPrayerDetailScreen = ({ navigation, route }) => {
                 style={{ width: 108, height: 84 }}
                 resizeMode="contain"
               />
-              <Text style={styles.HelloFamilyText}>{prayerData?.title || 'Untitled Prayer'}</Text>
-              <Text style={styles.prayerBody}>{prayerData?.body || ''}</Text>
-              {prayerData?.description && (
-                <Text style={[styles.prayerDescription, { color: 'white' }]}>
-                  {prayerData.description}
-                </Text>
-              )}
+              <Text style={styles.HelloFamilyText}>{prayerData.title}</Text>
+              <Text style={styles.HelloFamilyText2}>{prayerData.description}</Text>
             </View>
           </TouchableOpacity>
 
@@ -163,8 +86,8 @@ const MyPrayerDetailScreen = ({ navigation, route }) => {
                 </TouchableOpacity>
               </View>
               <View style={styles.headerContentBox}>
-                <Text style={styles.headerText}>MY PRAYER</Text>
-                <Text style={styles.headerSubText}>Personal Prayer</Text>
+                <Text style={styles.headerText}>{title}</Text>
+                <Text style={styles.headerSubText}>Group Prayer</Text>
               </View>
               <View style={styles.headerIconBox} />
             </View>
@@ -173,13 +96,7 @@ const MyPrayerDetailScreen = ({ navigation, route }) => {
           {/* Footer */}
           <Animated.View style={[styles.footer, { transform: [{ translateY: footerAnim }] }]}>
             <View style={styles.headerContainer}>
-              <View style={styles.headerIconBox}>
-                {!prayerData?.isAnswered && isEditable && (
-                  <TouchableOpacity onPress={onPressAnswered}>
-                    <Feather name="check" style={{ color: 'white' }} size={25} />
-                  </TouchableOpacity>
-                )}
-              </View>
+              <View style={styles.headerIconBox} />
               <View style={styles.headerContentBox} />
               <View style={styles.headerIconBox}>
                 <TouchableOpacity onPress={() => navigation.navigate('PrayerTimerScreen')}>
@@ -194,4 +111,4 @@ const MyPrayerDetailScreen = ({ navigation, route }) => {
   );
 };
 
-export default MyPrayerDetailScreen;
+export default GroupPrayerDetailScreen;
