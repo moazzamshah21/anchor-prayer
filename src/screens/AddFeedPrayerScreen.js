@@ -144,9 +144,14 @@ etc."
                 placeholderTextColor={'#707070'}
                 style={{
                   fontSize: 15,
-                  fontFamily: ThemeFonts?.REGULAR,
-                  height: 80,
+                  fontFamily: ThemeFonts.REGULAR,
+                  color: ThemeColors.BLACK, // Added dark text color
+                  height: 120, // Increased height for better visibility
                   marginLeft: -5,
+                  borderColor: '#E2E2E2',
+                  borderRadius: 8,
+                  padding: 10,
+                  textAlignVertical: 'top',
                 }}
                 value={description}
                 onChangeText={setDescription}

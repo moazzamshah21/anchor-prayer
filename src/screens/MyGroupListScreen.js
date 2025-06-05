@@ -2,7 +2,6 @@ import React, {useState, useEffect} from 'react';
 import {
   View,
   Text,
-  ScrollView,
   FlatList,
   Dimensions,
   ActivityIndicator
@@ -14,7 +13,7 @@ import GroupService from '../services/Group/GroupService';
 import {showMessage} from 'react-native-flash-message';
 import {ThemeColors} from '../utils/Theme';
 
-const {width} = Dimensions.get('window');
+const {width, height} = Dimensions.get('window');
 
 const MyGroupListScreen = ({navigation, route}) => {
   const [joinedGroups, setJoinedGroups] = useState([]);
@@ -64,44 +63,53 @@ const MyGroupListScreen = ({navigation, route}) => {
     <>
       <BackHeader navigation={navigation} title="My Joined Groups" />
       
-      <ScrollView
-        contentContainerStyle={styles.ScrollViewContentContainerStyle}
-        showsVerticalScrollIndicator={false}>
-        <View style={styles.MainContainer}>
-          <View style={{marginTop: 25}}>
-            <Text style={styles.LoginDetailsHeading}>My Groups</Text>
-          </View>
-          
-          {loading ? (
-            <View style={{padding: 20, alignItems: 'center'}}>
-              <ActivityIndicator size="large" color={ThemeColors.PRIMARY} />
-              <Text style={{marginTop: 10}}>Loading your groups...</Text>
+      <FlatList
+        data={joinedGroups}
+        renderItem={renderGroupItem}
+        keyExtractor={item => item._id}
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={{
+          paddingHorizontal: 15,
+          paddingBottom: 20,
+          flexGrow: 1,
+          minHeight: height // Ensure minimum height of screen
+        }}
+        ListHeaderComponent={
+          <View style={styles.MainContainer}>
+            <View style={{marginTop: 25}}>
+              <Text style={styles.LoginDetailsHeading}>My Groups</Text>
             </View>
-          ) : joinedGroups.length === 0 ? (
+            {loading ? (
+              <View style={{padding: 20, alignItems: 'center'}}>
+                <ActivityIndicator size="large" color={ThemeColors.PRIMARY} />
+                <Text style={{marginTop: 10}}>Loading your groups...</Text>
+              </View>
+            ) : joinedGroups.length === 0 ? (
+              <View style={{padding: 20, alignItems: 'center'}}>
+                <Text>You haven't joined any groups yet.</Text>
+              </View>
+            ) : null}
+          </View>
+        }
+        ListFooterComponent={
+          <View style={{
+            alignItems: 'center',
+            marginTop: 20,
+            paddingBottom: 20
+          }}>
+            <Text style={styles.LogoText}>
+              Designed by:{'\n'}digitalsoftwarelabs.com
+            </Text>
+          </View>
+        }
+        ListEmptyComponent={
+          !loading && (
             <View style={{padding: 20, alignItems: 'center'}}>
               <Text>You haven't joined any groups yet.</Text>
             </View>
-          ) : (
-            <View style={{marginTop: 20}}>
-              <FlatList
-                contentContainerStyle={{paddingHorizontal: 15}}
-                data={joinedGroups}
-                renderItem={renderGroupItem}
-                keyExtractor={item => item._id}
-                showsVerticalScrollIndicator={false}
-                showsHorizontalScrollIndicator={false}
-                style={{width: width, alignSelf: 'center'}}
-              />
-            </View>
-          )}
-        </View>
-
-        <View style={{alignItems: 'center', marginBottom: 10}}>
-          <Text style={styles.LogoText}>
-            Designed by:{'\n'}digitalsoftwarelabs.com
-          </Text>
-        </View>
-      </ScrollView>
+          )
+        }
+      />
     </>
   );
 };

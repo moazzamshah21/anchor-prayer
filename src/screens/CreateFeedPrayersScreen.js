@@ -189,14 +189,22 @@ const CreateFeedPrayersScreen = ({ navigation, route }) => {
           <View style={styles.inputContainer}>
             <Text style={styles.label}>Description*</Text>
             <TextInput
-              style={[styles.input, styles.multilineInput]}
-              placeholder="Enter prayer description"
-              placeholderTextColor={ThemeColors.LIGHT_GRAY}
+              placeholder="Add a description to this feed...You can even use hashtags: #family #feed etc."
+              placeholderTextColor={'#707070'}
+              style={{
+                fontSize: 15,
+                fontFamily: ThemeFonts.REGULAR,
+                color: ThemeColors.BLACK,
+                height: 120,
+                borderWidth: 1,
+                borderColor: ThemeColors.LIGHT_GRAY,
+                borderRadius: 8,
+                padding: 15,
+                textAlignVertical: 'top',
+              }}
               value={description}
               onChangeText={setDescription}
               multiline
-              numberOfLines={5}
-              textAlignVertical="top"
               maxLength={500}
             />
           </View>
@@ -273,19 +281,19 @@ const styles = StyleSheet.create({
     color: ThemeColors.DARK,
     marginBottom: 8,
   },
-  input: {
-    borderWidth: 1,
-    borderColor: ThemeColors.LIGHT_GRAY,
-    borderRadius: 8,
-    padding: 15,
-    fontFamily: ThemeFonts.REGULAR,
-    fontSize: 16,
-    color: ThemeColors.DARK,
-  },
-  multilineInput: {
-    minHeight: 120,
-    paddingTop: 15,
-  },
+// input: {
+//   borderWidth: 1,
+//   borderColor: ThemeColors.LIGHT_GRAY,
+//   borderRadius: 8,
+//   padding: 15,
+//   fontFamily: ThemeFonts.REGULAR,
+//   fontSize: 16,
+//   color: ThemeColors.DARK, // Make sure this is set
+// },
+  // multilineInput: {
+  //   minHeight: 120,
+  //   paddingTop: 15,
+  // },
   submitButton: {
     position: 'absolute',
     bottom: 20,

@@ -34,14 +34,12 @@ const CreateFeedScreen = ({navigation, route}) => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const isFocused = useIsFocused();
 
-  // Reset form when screen is focused
   useEffect(() => {
     if (isFocused) {
       resetForm();
     }
   }, [isFocused]);
 
-  // Validate form whenever inputs change
   useEffect(() => {
     validateForm();
   }, [feedTitle, feedDesc, selectedImageBase64]);
@@ -66,58 +64,68 @@ const CreateFeedScreen = ({navigation, route}) => {
   const requestStoragePermission = async () => {
     if (Platform.OS === 'android') {
       try {
+        // For Android 13+ we need READ_MEDIA_IMAGES instead of READ_EXTERNAL_STORAGE
+        const permission = Platform.Version >= 33 ?
+          PermissionsAndroid.PERMISSIONS.READ_MEDIA_IMAGES :
+          PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE;
+
         const granted = await PermissionsAndroid.request(
-          PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE,
+          permission,
           {
-            title: 'Storage Permission',
-            message: 'App needs access to your storage to select photos',
-            buttonNeutral: 'Ask Me Later',
-            buttonNegative: 'Cancel',
-            buttonPositive: 'OK',
-          },
+            title: 'Storage Permission Required',
+            message: 'App needs access to your photos',
+            buttonPositive: 'Allow',
+            buttonNegative: 'Deny',
+          }
         );
         return granted === PermissionsAndroid.RESULTS.GRANTED;
       } catch (err) {
-        console.warn(err);
+        console.warn('Permission error:', err);
         return false;
       }
     }
-    return true;
+    return true; // iOS doesn't need this permission
   };
 
   const handleImageSelection = async () => {
-    const hasPermission = await requestStoragePermission();
-    if (!hasPermission) {
-      showMessage({
-        message: 'Storage permission is required to select images',
-        type: 'danger',
+    try {
+      const hasPermission = await requestStoragePermission();
+      if (!hasPermission) {
+        showMessage({
+          message: 'Permission required',
+          description: 'Please allow storage access in settings',
+          type: 'danger',
+        });
+        return;
+      }
+
+      const result = await launchImageLibrary({
+        mediaType: 'photo',
+        includeBase64: true,
+        quality: 0.8,
       });
-      return;
-    }
 
-    const options = {
-      mediaType: 'photo',
-      includeBase64: true,
-      quality: 0.8,
-      maxWidth: 1024,
-      maxHeight: 1024,
-    };
-
-    launchImageLibrary(options, response => {
-      if (response.didCancel) {
+      if (result.didCancel) {
         console.log('User cancelled image picker');
-      } else if (response.error) {
-        console.log('ImagePicker Error: ', response.error);
+      } else if (result.error) {
+        console.log('ImagePicker Error: ', result.error);
         showMessage({
           message: 'Failed to select image',
           type: 'danger',
         });
-      } else if (response.assets && response.assets.length > 0) {
-        const source = response.assets[0].uri;
-        setSelectedImageBase64(response.assets[0].base64);
-        setSelectedImage(source);
+      } else if (result.assets && result.assets[0]) {
+        const asset = result.assets[0];
+        setSelectedImage(asset.uri);
+        setSelectedImageBase64(asset.base64);
       }
-    });
+    } catch (error) {
+      console.error('Image selection error:', error);
+      showMessage({
+        message: 'Error selecting image',
+        description: error.message,
+        type: 'danger',
+      });
+    }
   };
 
   const handleSubmit = async () => {
@@ -238,6 +246,7 @@ const CreateFeedScreen = ({navigation, route}) => {
                 style={{
                   fontSize: 15,
                   fontFamily: ThemeFonts?.REGULAR,
+                  color: ThemeColors?.BLACK, // Added black text color
                   height: 80,
                   marginLeft: -5,
                 }}

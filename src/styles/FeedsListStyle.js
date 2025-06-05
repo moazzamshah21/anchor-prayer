@@ -1,95 +1,118 @@
-import {StyleSheet, Dimensions, StatusBar, Platform} from 'react-native';
+import {StyleSheet, Dimensions} from 'react-native';
 import {ThemeColors, ThemeFonts} from '../utils/Theme';
-const {width, height} = Dimensions.get('window');
-const statusBarHeight = Platform.OS === 'android' ? StatusBar.currentHeight : 0;
+
+const {width} = Dimensions.get('window');
+
+// Fallback colors if ThemeColors are undefined
+const colors = {
+  primary: ThemeColors.PRIMARY || '#6DA75B',
+  white: ThemeColors.WHITE || '#FFFFFF',
+  black: ThemeColors.BLACK || '#000000',
+  darkGray: ThemeColors.DARK_GRAY || '#333333',
+  lightGray: ThemeColors.LIGHT_GRAY || '#F5F5F5',
+  error: ThemeColors.ERROR || '#FF0000',
+};
 
 export default StyleSheet.create({
-  ScrollViewContentContainerStyle: {
+  mainContainer: {
     flex: 1,
-    backgroundColor: ThemeColors?.WHITE,
+    backgroundColor: colors.white,
   },
-  MainContainer: {
-    flex: 1,
-    backgroundColor: ThemeColors.WHITE,
+  scrollViewContent: {
+    paddingBottom: 20,
   },
-  CreateAddBTnView: {
-    borderRadius: 10,
-    borderColor: '#6DA75B',
-    borderWidth: 1,
-    borderStyle: 'dashed',
-    paddingVertical: 15,
-  },
-  CreateAddBTnText: {
-    fontSize: 15,
-    textAlign: 'center',
-    fontFamily: ThemeFonts.REGULAR,
-    color: '#6DA75B',
-  },
-  SearchFieldView: {
-    borderRadius: 10,
-    paddingVertical: 6,
-    backgroundColor: '#F5F5F5',
-    paddingHorizontal: 15,
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginTop: 20,
-  },
-  FeaturedText: {
-    fontSize: 15,
-    fontFamily: ThemeFonts.REGULAR,
-    color: ThemeColors?.BLACK,
-  },
-  HealingText: {
-    fontSize: 15,
-    fontFamily: ThemeFonts.SEMI_BOLD,
-    color: ThemeColors?.BLACK,
-    textAlign: 'center',
-  },
-  GrayDivider: {
-    width: width,
-    height: 1,
-    backgroundColor: ThemeColors?.DARK_GRAY,
-  },
-  AnchorText: {
-    fontSize: 15,
-    fontFamily: ThemeFonts.MEDIUM,
-    color: ThemeColors?.BLACK,
+  searchContainer: {
     paddingHorizontal: 20,
     marginTop: 20,
+    marginBottom: 10,
   },
-  LogoText: {
+  searchField: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: colors.lightGray,
+    borderRadius: 10,
+    paddingVertical: 8,
+    paddingHorizontal: 15,
+  },
+  searchIcon: {
+    color: colors.darkGray,
+    marginRight: 10,
+  },
+  searchInput: {
+    flex: 1,
     fontSize: 15,
-    textAlign: 'center',
     fontFamily: ThemeFonts.MEDIUM,
-    color: ThemeColors.BLACK,
+    color: colors.darkGray,
+    paddingVertical: 0,
   },
-  HelloText: {
+  feedsListContainer: {
+    margin: 20,
+  },
+  feedItem: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingHorizontal: 0,
+    marginBottom: 10,
+    backgroundColor: colors.darkGray['50'] || '#F0F0F0',
+    borderRadius: 10,
+  },
+  feedIconContainer: {
+    marginRight: 15,
+  },
+  feedIconBackground: {
+    width: 90,
+    height: 90,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  feedIcon: {
+    width: 20,
+    height: 14,
+    marginTop: -5,
+  },
+  feedTextContainer: {
+    flex: 1,
+  },
+  feedTitle: {
     fontSize: 16,
-    color: ThemeColors.BLACK,
     fontFamily: ThemeFonts.MEDIUM,
+    color: colors.black,
+    marginBottom: 5,
   },
-  ViewedText: {
-    fontSize: 6,
-    color: ThemeColors.BLACK,
+  feedStatsContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  heartIcon: {
+    width: 10,
+    height: 10,
+  },
+  likeIcon: {
+    width: 10,
+    height: 10,
+    marginLeft: -2,
+  },
+  viewedText: {
+    fontSize: 10,
     fontFamily: ThemeFonts.MEDIUM,
+    color: colors.black,
     marginLeft: 5,
   },
-  // Additional styles for dynamic functionality
   loadingContainer: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: ThemeColors.WHITE,
+    backgroundColor: colors.white,
   },
   errorContainer: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
     padding: 20,
-    backgroundColor: ThemeColors.WHITE,
+    backgroundColor: colors.white,
   },
   errorText: {
-    color: ThemeColors.ERROR,
+    color: colors.error,
     fontFamily: ThemeFonts.REGULAR,
     fontSize: 16,
     textAlign: 'center',
@@ -97,11 +120,11 @@ export default StyleSheet.create({
   },
   retryButton: {
     padding: 10,
-    backgroundColor: ThemeColors.PRIMARY,
+    backgroundColor: colors.primary,
     borderRadius: 5,
   },
   retryText: {
-    color: ThemeColors.WHITE,
+    color: colors.white,
     fontFamily: ThemeFonts.MEDIUM,
   },
   noResults: {
@@ -112,7 +135,7 @@ export default StyleSheet.create({
   noResultsText: {
     fontFamily: ThemeFonts.REGULAR,
     fontSize: 16,
-    color: ThemeColors.DARK_GRAY,
+    color: colors.darkGray,
     textAlign: 'center',
   },
 });

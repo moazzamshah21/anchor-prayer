@@ -210,7 +210,7 @@ const CustomDrawerContent = props => {
               <Text style={styles.MenuItemText}>Feeds</Text>
             </TouchableOpacity>
           </View>
-          <View style={styles.MenuItem}>
+          {/* <View style={styles.MenuItem}>
             <TouchableOpacity
               style={styles.MenuItemTouch}
               onPress={() => {
@@ -219,7 +219,7 @@ const CustomDrawerContent = props => {
               <FeedIcon />
               <Text style={styles.MenuItemText}>My Activity</Text>
             </TouchableOpacity>
-          </View>
+          </View> */}
           {
             myAnsweredPrayerList?.length > 0 && (
               <View style={styles.MenuItem}>

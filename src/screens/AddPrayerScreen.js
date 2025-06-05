@@ -101,7 +101,7 @@ const AddPrayerScreen = ({navigation, route}) => {
             />
             <View style={styles.DividerView} />
             <View style={styles.contentContainerStyle}>
-              <Text style={styles.ImagesText}>IMAGES</Text>
+              <Text style={styles.ImagesText}>Images</Text>
               {selectedImage == null && (
                 <TouchableOpacity
                   onPress={() => {
@@ -155,23 +155,24 @@ const AddPrayerScreen = ({navigation, route}) => {
             <View style={styles.contentContainerStyle}>
               <Text
                 style={[styles.ImagesText, {marginVertical: 0, marginTop: 15}]}>
-                DESCRIPTION
+                DESCRIPTIONs
               </Text>
               <TextInput
-                placeholder="Add a description to this prayer...
+  placeholder="Add a description to this prayer...
 You can even use hashtags: #family#pray
 etc."
-                placeholderTextColor={'#707070'}
-                style={{
-                  fontSize: 15,
-                  fontFamily: ThemeFonts?.REGULAR,
-                  height: 80,
-                  marginLeft: -5,
-                }}
-                value={PrayerDesc}
-                onChangeText={x => setPrayerDesc(x)}
-                multiline
-              />
+  placeholderTextColor={'#707070'}
+  style={{
+    fontSize: 15,
+    fontFamily: ThemeFonts?.REGULAR,
+    height: 80,
+    marginLeft: -5,
+    color: ThemeColors?.BLACK, // Add this line to make text black
+  }}
+  value={PrayerDesc}
+  onChangeText={x => setPrayerDesc(x)}
+  multiline
+/>
             </View>
             <View style={styles.DividerView} />
             <View

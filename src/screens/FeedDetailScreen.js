@@ -38,13 +38,17 @@ const FeedDetailScreen = ({navigation, route}) => {
         }
       }
       
-      // Fetch prayers specific to this feed
       const prayersResponse = await RestClient.Get(
         `/prayer/get-prayer-by-feed-id?id=${feedId}&page=${currentPage}&limit=10`
       );
       
       if (prayersResponse.success) {
-        setPrayers(prayersResponse.data || []);
+        const normalizedPrayers = prayersResponse.data.map(prayer => ({
+          ...prayer,
+          isLiked: prayer.isLiked || prayer.isLike || false,
+          comments: prayer.comments || [] // Ensure comments array exists
+        }));
+        setPrayers(normalizedPrayers || []);
         setCurrentPage(prayersResponse.currentPage || 1);
         setTotalPages(prayersResponse.totalPages || 1);
       }
@@ -52,6 +56,7 @@ const FeedDetailScreen = ({navigation, route}) => {
       setLoading(false);
     }
   };
+
 
   const loadMorePrayers = async () => {
     if (currentPage >= totalPages) return;
@@ -77,11 +82,10 @@ const FeedDetailScreen = ({navigation, route}) => {
       const response = await RestClient.Post('/prayer/add-pray', {
         ...prayerData,
         type: 'feed',
-        groupId: feedId // Using feedId as groupId since it's a feed-specific prayer
+        groupId: feedId
       });
       
       if (response.success) {
-        // Refresh the prayers list
         setCurrentPage(1);
         fetchFeedDetails();
       }
@@ -98,16 +102,18 @@ const FeedDetailScreen = ({navigation, route}) => {
       });
       
       if (response.success) {
-        setPrayers(prayers.map(prayer => {
-          if (prayer._id === prayerId) {
-            return {
-              ...prayer,
-              isLiked: true,
-              likeCount: prayer.likeCount + 1
-            };
-          }
-          return prayer;
-        }));
+        setPrayers(prevPrayers => 
+          prevPrayers.map(prayer => {
+            if (prayer._id === prayerId) {
+              return {
+                ...prayer,
+                isLiked: true,
+                likeCount: (prayer.likeCount || 0) + 1
+              };
+            }
+            return prayer;
+          })
+        );
       }
     } catch (error) {
       console.error('Error liking prayer:', error);
@@ -124,16 +130,18 @@ const FeedDetailScreen = ({navigation, route}) => {
       });
       
       if (response.success) {
-        setPrayers(prayers.map(prayer => {
-          if (prayer._id === prayerId) {
-            return {
-              ...prayer,
-              isLiked: false,
-              likeCount: Math.max(0, prayer.likeCount - 1)
-            };
-          }
-          return prayer;
-        }));
+        setPrayers(prevPrayers => 
+          prevPrayers.map(prayer => {
+            if (prayer._id === prayerId) {
+              return {
+                ...prayer,
+                isLiked: false,
+                likeCount: Math.max(0, (prayer.likeCount || 0) - 1)
+              };
+            }
+            return prayer;
+          })
+        );
       }
     } catch (error) {
       console.error('Error disliking prayer:', error);
@@ -141,7 +149,7 @@ const FeedDetailScreen = ({navigation, route}) => {
       setLikeLoading(prev => ({...prev, [prayerId]: false}));
     }
   };
-
+  
   const handleLikeDislike = (prayerId, isLiked) => {
     if (isLiked) {
       handleDislikePrayer(prayerId);
@@ -153,28 +161,46 @@ const FeedDetailScreen = ({navigation, route}) => {
   const handleAddComment = async (prayerId, commentText) => {
     try {
       setCommentLoading(prev => ({...prev, [prayerId]: true}));
+      
       const response = await RestClient.Post('/prayer/add-comment', {
         prayerId: prayerId,
         comment: commentText
       });
-      
+  
       if (response.success) {
-        setPrayers(prayers.map(prayer => {
-          if (prayer._id === prayerId) {
-            return {
-              ...prayer,
-              commentCount: prayer.commentCount + 1,
-              comments: [...(prayer.comments || []), response.data.comment]
-            };
+        // The API should return the complete comment data
+        if (response.data && response.data.comment) {
+          return { 
+            success: true, 
+            data: {
+              comment: {
+                userId: response.data.comment.userId,
+                name: response.data.comment.name,
+                email: response.data.comment.email,
+                comment: response.data.comment.content || response.data.comment.comment,
+                createdAt: response.data.comment.createdAt || new Date().toISOString()
+              }
+            }
+          };
+        }
+        // Fallback if API doesn't return full comment data
+        return {
+          success: true,
+          data: {
+            comment: {
+              userId: "unknown",
+              name: "You",
+              email: "",
+              comment: commentText,
+              createdAt: new Date().toISOString()
+            }
           }
-          return prayer;
-        }));
-        return true;
+        };
       }
-      return false;
+      return { success: false };
     } catch (error) {
       console.error('Error adding comment:', error);
-      return false;
+      return { success: false };
     } finally {
       setCommentLoading(prev => ({...prev, [prayerId]: false}));
     }
@@ -230,9 +256,6 @@ const FeedDetailScreen = ({navigation, route}) => {
           {/* Feed Description */}
           <View style={styles.descriptionContainer}>
             <Text style={styles.feedDescription}>
-              Description
-            </Text>
-            <Text style={styles.feedDescription}>
               {feed.description || 'No description available'}
             </Text>
           </View>
@@ -244,21 +267,18 @@ const FeedDetailScreen = ({navigation, route}) => {
                 key={index}
                 onPress={() => navigation.navigate('FeedPrayerDetailScreen', {
                   prayerData: {
-                    id: prayer._id,
+                    _id: prayer._id,
                     userId: prayer.userId,
                     name: prayer.name,
                     email: prayer.email,
                     title: prayer.title,
-                    imageUrl: prayer.imageUrl,
                     description: prayer.description,
                     likeCount: prayer.likeCount,
-                    commentCount: prayer.commentCount,
-                    comments: prayer.comments,
+                    comments: prayer.comments || [],
                     isLiked: prayer.isLiked
                   },
                   title: feed.title,
-                  onAddComment: (commentText) => handleAddComment(prayer._id, commentText),
-                  onLikeDislike: () => handleLikeDislike(prayer._id, prayer.isLiked)
+                  onAddComment: (commentText) => handleAddComment(prayer._id, commentText)
                 })}
                 activeOpacity={0.8}
               >
@@ -297,21 +317,18 @@ const FeedDetailScreen = ({navigation, route}) => {
                     <TouchableOpacity
                       onPress={() => navigation.navigate('FeedPrayerDetailScreen', {
                         prayerData: {
-                          id: prayer._id,
+                          _id: prayer._id,
                           userId: prayer.userId,
                           name: prayer.name,
                           email: prayer.email,
                           title: prayer.title,
-                          imageUrl: prayer.imageUrl,
                           description: prayer.description,
                           likeCount: prayer.likeCount,
-                          commentCount: prayer.commentCount,
-                          comments: prayer.comments,
+                          comments: prayer.comments || [],
                           isLiked: prayer.isLiked
                         },
                         title: feed.title,
-                        onAddComment: (commentText) => handleAddComment(prayer._id, commentText),
-                        onLikeDislike: () => handleLikeDislike(prayer._id, prayer.isLiked)
+                        onAddComment: (commentText) => handleAddComment(prayer._id, commentText)
                       })}
                       style={[styles.actionButton, {marginLeft: 10}]}>
                       {commentLoading[prayer._id] ? (
@@ -324,32 +341,6 @@ const FeedDetailScreen = ({navigation, route}) => {
                         />
                       )}
                     </TouchableOpacity>
-                  </View>
-                  <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                  <TouchableOpacity 
-                    onPress={() => navigation.navigate('FeedPrayerDetailScreen', {
-                      prayerData: {
-                        id: prayer._id,
-                        userId: prayer.userId,
-                        name: prayer.name,
-                        email: prayer.email,
-                        title: prayer.title,
-                        imageUrl: prayer.imageUrl,
-                        description: prayer.description,
-                        likeCount: prayer.likeCount,
-                        commentCount: prayer.commentCount,
-                        comments: prayer.comments,
-                        isLiked: prayer.isLiked
-                    }})}
-                  > 
-                    <ImageBackground
-                      source={require('../../assets/images/bggreen.png')}
-                      style={styles.prayButtonBackground}
-                      resizeMode="contain">
-                      <Text style={styles.prayButtonText}>Pray</Text>
-                    </ImageBackground>
-                  </TouchableOpacity>
-
                   </View>
                 </View>
               </TouchableOpacity>
@@ -373,7 +364,7 @@ const FeedDetailScreen = ({navigation, route}) => {
         style={styles.addButton}
         onPress={() => navigation.navigate('AddFeedPrayerScreen', {
           feedId,
-          feedData: feed, // Send the entire feed object
+          feedData: feed,
           onAddPrayer: handleAddPrayer
         })}>
         <Image
@@ -499,18 +490,6 @@ const styles = StyleSheet.create({
   messageIcon: {
     width: 20,
     height: 20,
-  },
-  prayButtonBackground: {
-    width: 85,
-    height: 85,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  prayButtonText: {
-    fontSize: 14,
-    color: ThemeColors.BLACK,
-    fontFamily: ThemeFonts.MEDIUM,
-    textAlign: 'center',
   },
   noPrayers: {
     padding: 20,

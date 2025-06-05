@@ -45,13 +45,8 @@ const GroupListScreen = ({navigation, route}) => {
   return (
     <React.Fragment>
       <BackHeader navigation={navigation} title="Join Group" />
-      <ScrollView
-        contentContainerStyle={styles.ScrollViewContentContainerStyle}
-        showsVerticalScrollIndicator={false}>
-        <View style={styles.MainContainer}>
-          <View style={{marginTop: 25}}>
-            <Text style={styles.LoginDetailsHeading}>Active Groups</Text>
-          </View>
+      <View style={styles.MainContainer}>
+          
           <View style={{marginTop: 20}}>
             <FlatList
               contentContainerStyle={{paddingHorizontal: 15}}
@@ -70,7 +65,6 @@ const GroupListScreen = ({navigation, route}) => {
             Designed by:{'\n'}digitalsoftwarelabs.com
           </Text>
         </View>
-      </ScrollView>
     </React.Fragment>
   );
 };
