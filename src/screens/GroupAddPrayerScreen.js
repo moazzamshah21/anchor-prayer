@@ -164,20 +164,21 @@ const GroupAddPrayerScreen = ({ navigation, route }) => {
                 DESCRIPTION
               </Text>
               <TextInput
-                placeholder="Add a description to this prayer...
+  placeholder="Add a description to this prayer...
 You can even use hashtags: #family#pray
 etc."
-                placeholderTextColor={'#707070'}
-                style={{
-                  fontSize: 15,
-                  fontFamily: ThemeFonts?.REGULAR,
-                  height: 80,
-                  marginLeft: -5,
-                }}
-                value={description}
-                onChangeText={setDescription}
-                multiline
-              />
+  placeholderTextColor={'#707070'}
+  style={{
+    fontSize: 15,
+    fontFamily: ThemeFonts?.REGULAR,
+    height: 80,
+    marginLeft: -5,
+    color: ThemeColors.BLACK, // Add this line to make text black
+  }}
+  value={description}
+  onChangeText={setDescription}
+  multiline
+/>
             </View>
             <View style={styles.DividerView} />
             <View style={styles.submitButtonContainer}>

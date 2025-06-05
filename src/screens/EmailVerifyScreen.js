@@ -56,7 +56,7 @@ const EmailVerifyScreen = ({ navigation, route }) => {
       navigation.dispatch(
         CommonActions.reset({
           index: 1,
-          routes: [{ name: 'Dashboard' }],
+          routes: [{ name: 'SignIn' }],
         }),
       );
     }, 500);

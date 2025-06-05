@@ -84,7 +84,8 @@ const styles = StyleSheet.create({
         fontSize: 30,
         paddingTop: 0,
         paddingBottom: 0,
-        textAlignVertical: 'center'
+        textAlignVertical: 'center',
+        color: ThemeColors.BLACK, // 👈 Add this line to set text color
     },
 });
 

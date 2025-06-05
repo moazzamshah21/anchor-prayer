@@ -5,6 +5,7 @@ import {
   TouchableOpacity,
   ScrollView,
   Image,
+  SafeAreaView,
 } from 'react-native';
 import styles from '../styles/HomeStyle';
 import Header from '../components/Header';
@@ -90,108 +91,104 @@ const HomeScreen = ({ navigation, route }) => {
   }, []);
 
   return (
-    <>
+    <SafeAreaView style={{ flex: 1, backgroundColor: 'white' }}>
       <Header navigation={navigation} />
       <ScrollView
-        contentContainerStyle={[
-          styles.ScrollViewContentContainerStyle,
-          { 
-            flexGrow: 1,
-            justifyContent: 'space-between',
-            paddingBottom: 20
-          }
-        ]}
+        contentContainerStyle={{
+          paddingBottom: 20,
+          paddingHorizontal: 16,
+          backgroundColor: 'white',
+        }}
         showsVerticalScrollIndicator={false}
+        style={{ backgroundColor: 'white' }}
       >
-        <View style={styles.MainContainer}>
-          {/* Verse of the Day Section */}
-          <View style={[styles.PageTitleView, { marginTop: 20 }]}>
-            <Text style={styles.PageMainTitle}>Verse of the day</Text>
-            {verseOfTheDay.text && (
-              <>
-                <Text style={styles.PageSubTitle}>
-                  {verseOfTheDay.text}
-                </Text>
-                <Text style={styles.BibleReference}>
-                  {verseOfTheDay.reference}
-                </Text>
-              </>
-            )}
+        {/* Verse of the Day Section */}
+        <View style={[styles.PageTitleView, { marginTop: 20, backgroundColor: 'white' }]}>
+          <Text style={styles.PageMainTitle}>Verse of the day</Text>
+          {verseOfTheDay.text && (
+            <>
+              <Text style={styles.PageSubTitle}>
+                {verseOfTheDay.text}
+              </Text>
+              <Text style={styles.BibleReference}>
+                {verseOfTheDay.reference}
+              </Text>
+            </>
+          )}
+        </View>
+
+        {/* Main Content */}
+        <View style={{ marginTop: 30, backgroundColor: 'white' }}>
+          {/* First Row */}
+          <View style={[styles.HomeItemView, { backgroundColor: 'white' }]}>
+            <View style={[styles.HomeItemMainLayer, { backgroundColor: 'white' }]}>
+              <TouchableOpacity
+                onPress={() => {
+                  navigation.navigate('MyPrayerScreen');
+                }}>
+                <Image
+                  source={require('../../assets/images/my-prayer-icon.png')}
+                  style={{ width: 150, height: 150 }}
+                  resizeMode="contain"
+                />
+              </TouchableOpacity>
+            </View>
+            <View style={[styles.HomeItemMainLayer, { backgroundColor: 'white' }]}>
+              <TouchableOpacity
+                onPress={() => {
+                  navigation.navigate('GuidedPrayerScreen');
+                }}>
+                <Image
+                  source={require('../../assets/images/guided-prayer-icon.png')}
+                  style={{ width: 150, height: 150 }}
+                  resizeMode="contain"
+                />
+              </TouchableOpacity>
+            </View>
           </View>
 
-          {/* Main Content - Takes remaining space */}
-          <View style={{ flex: 1, justifyContent: 'center' }}>
-            {/* First Row */}
-            <View style={styles.HomeItemView}>
-              <View style={styles.HomeItemMainLayer}>
-                <TouchableOpacity
-                  onPress={() => {
-                    navigation.navigate('MyPrayerScreen');
-                  }}>
-                  <Image
-                    source={require('../../assets/images/my-prayer-icon.png')}
-                    style={{ width: 150, height: 150 }}
-                    resizeMode="contain"
-                  />
-                </TouchableOpacity>
-              </View>
-              <View style={styles.HomeItemMainLayer}>
-                <TouchableOpacity
-                  onPress={() => {
-                    navigation.navigate('GuidedPrayerScreen');
-                  }}>
-                  <Image
-                    source={require('../../assets/images/guided-prayer-icon.png')}
-                    style={{ width: 150, height: 150 }}
-                    resizeMode="contain"
-                  />
-                </TouchableOpacity>
-              </View>
+          {/* Second Row */}
+          <View style={[styles.HomeItemView, { marginTop: 20, backgroundColor: 'white' }]}>
+            <View style={[styles.HomeItemMainLayer, { backgroundColor: 'white' }]}>
+              <TouchableOpacity
+                onPress={() => {
+                  navigation.navigate('AddPrayerScreen', {
+                    prayerType: 'personal'
+                  });
+                }}>
+                <Image
+                  source={require('../../assets/images/add-a-prayer-icon.png')}
+                  style={{ width: 150, height: 150 }}
+                  resizeMode="contain"
+                />
+              </TouchableOpacity>
             </View>
-
-            {/* Second Row */}
-            <View style={styles.HomeItemView}>
-              <View style={styles.HomeItemMainLayer}>
-                <TouchableOpacity
-                  onPress={() => {
-                    navigation.navigate('AddPrayerScreen', {
-                      prayerType: 'personal' // Explicitly set the type
-                    });
-                  }}>
-                  <Image
-                    source={require('../../assets/images/add-a-prayer-icon.png')}
-                    style={{ width: 150, height: 150 }}
-                    resizeMode="contain"
-                  />
-                </TouchableOpacity>
-              </View>
-              <View style={styles.HomeItemMainLayer}>
-                <TouchableOpacity
-                  onPress={() => {
-                    navigation.navigate('GuidedPrayerDetailScreen', {
-                      categoryData: {
-                        name: 'Meditation',
-                        items: GUIDED_PRAYER_LIST.find(cat => cat.name === 'Meditation')?.subCategories || []
-                      }
-                    });
-                  }}>
-                  <Image
-                    source={require('../../assets/images/meditation-icon.png')}
-                    style={{ width: 150, height: 150, maxHeight: 150, maxWidth: 150 }}
-                    resizeMode="contain"
-                  />
-                </TouchableOpacity>
-              </View>
+            <View style={[styles.HomeItemMainLayer, { backgroundColor: 'white' }]}>
+              <TouchableOpacity
+                onPress={() => {
+                  navigation.navigate('GuidedPrayerDetailScreen', {
+                    categoryData: {
+                      name: 'Meditation',
+                      items: GUIDED_PRAYER_LIST.find(cat => cat.name === 'Meditation')?.subCategories || []
+                    }
+                  });
+                }}>
+                <Image
+                  source={require('../../assets/images/meditation-icon.png')}
+                  style={{ width: 150, height: 150 }}
+                  resizeMode="contain"
+                />
+              </TouchableOpacity>
             </View>
           </View>
         </View>
 
-        {/* Footer - Pushed to bottom */}
+        {/* Footer */}
         <View style={{
-          padding: 16,
+          marginTop: 40,
           alignItems: 'center',
           justifyContent: 'center',
-          marginTop: 'auto' // This ensures it stays at the bottom
+          backgroundColor: 'white',
         }}>
           <Image
             source={require('../../assets/images/anchor.png')}
@@ -203,7 +200,7 @@ const HomeScreen = ({ navigation, route }) => {
           </Text>
         </View>
       </ScrollView>
-    </>
+    </SafeAreaView>
   );
 };
 

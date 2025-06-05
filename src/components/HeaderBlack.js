@@ -140,7 +140,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   FinishPrayingHeading: {
-    fontSize: 20,
+    fontSize: 14,
     fontFamily: ThemeFonts.MEDIUM,
     color: ThemeColors.WHITE,
   },

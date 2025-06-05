@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useCallback} from 'react';
 import {
   View,
   Text,
@@ -27,7 +27,7 @@ const FeedDetailScreen = ({navigation, route}) => {
   const [likeLoading, setLikeLoading] = useState({});
   const [commentLoading, setCommentLoading] = useState({});
 
-  const fetchFeedDetails = async () => {
+  const fetchFeedDetails = useCallback(async () => {
     try {
       setLoading(true);
       
@@ -46,35 +46,26 @@ const FeedDetailScreen = ({navigation, route}) => {
         const normalizedPrayers = prayersResponse.data.map(prayer => ({
           ...prayer,
           isLiked: prayer.isLiked || prayer.isLike || false,
-          comments: prayer.comments || [] // Ensure comments array exists
+          comments: prayer.comments || []
         }));
-        setPrayers(normalizedPrayers || []);
+        
+        if (currentPage === 1) {
+          setPrayers(normalizedPrayers);
+        } else {
+          setPrayers(prev => [...prev, ...normalizedPrayers]);
+        }
+        
         setCurrentPage(prayersResponse.currentPage || 1);
         setTotalPages(prayersResponse.totalPages || 1);
       }
     } finally {
       setLoading(false);
     }
-  };
-
+  }, [feedId, currentPage, feedData]);
 
   const loadMorePrayers = async () => {
     if (currentPage >= totalPages) return;
-    
-    try {
-      const nextPage = currentPage + 1;
-      const prayersResponse = await RestClient.Get(
-        `/prayer/get-prayer-by-feed-id?id=${feedId}&page=${nextPage}&limit=10`
-      );
-      
-      if (prayersResponse.success) {
-        setPrayers([...prayers, ...prayersResponse.data]);
-        setCurrentPage(nextPage);
-        setTotalPages(prayersResponse.totalPages || 1);
-      }
-    } catch (error) {
-      console.error('Error loading more prayers:', error);
-    }
+    setCurrentPage(prev => prev + 1);
   };
 
   const handleAddPrayer = async (prayerData) => {
@@ -97,9 +88,7 @@ const FeedDetailScreen = ({navigation, route}) => {
   const handleLikePrayer = async (prayerId) => {
     try {
       setLikeLoading(prev => ({...prev, [prayerId]: true}));
-      const response = await RestClient.Post('/prayer/like', {
-        prayerId: prayerId
-      });
+      const response = await RestClient.Post('/prayer/like', {prayerId});
       
       if (response.success) {
         setPrayers(prevPrayers => 
@@ -125,9 +114,7 @@ const FeedDetailScreen = ({navigation, route}) => {
   const handleDislikePrayer = async (prayerId) => {
     try {
       setLikeLoading(prev => ({...prev, [prayerId]: true}));
-      const response = await RestClient.Post('/prayer/dislike', {
-        prayerId: prayerId
-      });
+      const response = await RestClient.Post('/prayer/dislike', {prayerId});
       
       if (response.success) {
         setPrayers(prevPrayers => 
@@ -158,57 +145,49 @@ const FeedDetailScreen = ({navigation, route}) => {
     }
   };
 
-  const handleAddComment = async (prayerId, commentText) => {
+  const handleAddComment = useCallback(async (prayerId, commentText) => {
     try {
       setCommentLoading(prev => ({...prev, [prayerId]: true}));
-      
       const response = await RestClient.Post('/prayer/add-comment', {
-        prayerId: prayerId,
+        prayerId,
         comment: commentText
       });
   
       if (response.success) {
-        // The API should return the complete comment data
-        if (response.data && response.data.comment) {
-          return { 
-            success: true, 
-            data: {
-              comment: {
-                userId: response.data.comment.userId,
-                name: response.data.comment.name,
-                email: response.data.comment.email,
-                comment: response.data.comment.content || response.data.comment.comment,
-                createdAt: response.data.comment.createdAt || new Date().toISOString()
-              }
-            }
-          };
-        }
-        // Fallback if API doesn't return full comment data
-        return {
-          success: true,
-          data: {
-            comment: {
-              userId: "unknown",
-              name: "You",
-              email: "",
-              comment: commentText,
-              createdAt: new Date().toISOString()
-            }
-          }
+        const newComment = response.data?.comment || {
+          userId: "unknown",
+          name: "You",
+          email: "",
+          comment: commentText,
+          createdAt: new Date().toISOString()
         };
+        
+        setPrayers(prevPrayers => 
+          prevPrayers.map(prayer => {
+            if (prayer._id === prayerId) {
+              return {
+                ...prayer,
+                comments: [...(prayer.comments || []), newComment]
+              };
+            }
+            return prayer;
+          })
+        );
+        
+        return {success: true};
       }
-      return { success: false };
+      return {success: false};
     } catch (error) {
       console.error('Error adding comment:', error);
-      return { success: false };
+      return {success: false};
     } finally {
       setCommentLoading(prev => ({...prev, [prayerId]: false}));
     }
-  };
+  }, []);
 
   useEffect(() => {
     fetchFeedDetails();
-  }, [feedId, currentPage]);
+  }, [fetchFeedDetails]);
 
   if (loading && !feed) {
     return (
@@ -234,7 +213,6 @@ const FeedDetailScreen = ({navigation, route}) => {
           }
         }}>
         <View style={styles.MainContainer}>
-          {/* Banner Image */}
           <ImageBackground
             source={feed.imageUrl ? {uri: feed.imageUrl} : require('../../assets/images/selected.png')}
             style={styles.bannerImage}
@@ -242,7 +220,6 @@ const FeedDetailScreen = ({navigation, route}) => {
             <View style={styles.bannerOverlay} />
           </ImageBackground>
           
-          {/* Feed Title Section */}
           <View style={styles.feedHeader}>
             <Image
               source={require('../../assets/images/simple.png')}
@@ -253,29 +230,20 @@ const FeedDetailScreen = ({navigation, route}) => {
             <Text style={styles.feedSubtitle}>PRAYERS</Text>
           </View>
           
-          {/* Feed Description */}
           <View style={styles.descriptionContainer}>
             <Text style={styles.feedDescription}>
               {feed.description || 'No description available'}
             </Text>
           </View>
 
-          {/* Prayer List */}
           <View style={styles.prayersContainer}>
-            {prayers.map((prayer, index) => (
+            {prayers.map((prayer) => (
               <TouchableOpacity
-                key={index}
+                key={prayer._id}
                 onPress={() => navigation.navigate('FeedPrayerDetailScreen', {
                   prayerData: {
-                    _id: prayer._id,
-                    userId: prayer.userId,
-                    name: prayer.name,
-                    email: prayer.email,
-                    title: prayer.title,
-                    description: prayer.description,
-                    likeCount: prayer.likeCount,
-                    comments: prayer.comments || [],
-                    isLiked: prayer.isLiked
+                    ...prayer,
+                    comments: prayer.comments || []
                   },
                   title: feed.title,
                   onAddComment: (commentText) => handleAddComment(prayer._id, commentText)
@@ -284,7 +252,7 @@ const FeedDetailScreen = ({navigation, route}) => {
               >
                 <View style={styles.prayerItem}>
                   <View style={{justifyContent: 'center', flexGrow: 1}}>
-                    <Text style={styles.prayerTitle}>{prayer?.title}</Text>
+                    <Text style={styles.prayerTitle}>{prayer.title}</Text>
                     <View style={{flexDirection: 'row', alignItems: 'center'}}>
                       <Image
                         source={require('../../assets/images/like.png')}
@@ -292,7 +260,7 @@ const FeedDetailScreen = ({navigation, route}) => {
                         resizeMode="contain"
                       />
                       <Text style={styles.likeCountText}>
-                        {prayer?.likeCount || 0} people like this
+                        {prayer.likeCount || 0} people like this
                       </Text>
                     </View>
                   </View>
@@ -317,15 +285,8 @@ const FeedDetailScreen = ({navigation, route}) => {
                     <TouchableOpacity
                       onPress={() => navigation.navigate('FeedPrayerDetailScreen', {
                         prayerData: {
-                          _id: prayer._id,
-                          userId: prayer.userId,
-                          name: prayer.name,
-                          email: prayer.email,
-                          title: prayer.title,
-                          description: prayer.description,
-                          likeCount: prayer.likeCount,
-                          comments: prayer.comments || [],
-                          isLiked: prayer.isLiked
+                          ...prayer,
+                          comments: prayer.comments || []
                         },
                         title: feed.title,
                         onAddComment: (commentText) => handleAddComment(prayer._id, commentText)
@@ -359,7 +320,6 @@ const FeedDetailScreen = ({navigation, route}) => {
         </View>
       </ScrollView>
 
-      {/* Add Prayer Button */}
       <TouchableOpacity
         style={styles.addButton}
         onPress={() => navigation.navigate('AddFeedPrayerScreen', {

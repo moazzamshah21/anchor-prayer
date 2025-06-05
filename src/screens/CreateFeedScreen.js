@@ -146,7 +146,7 @@ const CreateFeedScreen = ({navigation, route}) => {
         setModalVisible(true);
         setTimeout(() => {
           setModalVisible(false);
-          navigation.goBack();
+          navigation.navigate('FeedsListScreen');
         }, 2000);
       } else {
         showMessage({

@@ -265,20 +265,21 @@ const EditPrayerScreen = ({ navigation, route }) => {
                 DESCRIPTION
               </Text>
               <TextInput
-                placeholder="Add a description to this prayer...
+  placeholder="Add a description to this prayer...
 You can even use hashtags: #family#pray
 etc."
-                placeholderTextColor={'#707070'}
-                multiline={true}
-                style={{
-                  fontSize: 15,
-                  fontFamily: ThemeFonts?.REGULAR,
-                  height: 80,
-                  marginLeft: -5,
-                }}
-                value={PrayerDesc}
-                onChangeText={x => setPrayerDesc(x)}
-              />
+  placeholderTextColor={'#707070'}
+  multiline={true}
+  style={{
+    fontSize: 15,
+    fontFamily: ThemeFonts?.REGULAR,
+    height: 80,
+    marginLeft: -5,
+    color: ThemeColors.BLACK, // Add this line to set text color to black
+  }}
+  value={PrayerDesc}
+  onChangeText={x => setPrayerDesc(x)}
+/>
             </View>
 
             {prayer && prayer?.isAnswered === true && (

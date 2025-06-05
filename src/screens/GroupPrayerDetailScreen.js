@@ -20,11 +20,12 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import { ThemeColors } from '../utils/Theme';
 import RestClient from '../services/RestClient';
+import { showMessage } from 'react-native-flash-message';
 
 const { width, height } = Dimensions.get('window');
 
 const GroupPrayerDetailScreen = ({ navigation, route }) => {
-  const { prayerData, title } = route.params;
+  const { prayerData, title, onCommentAdded } = route.params;
   const [isVisible, setIsVisible] = useState(false);
   const [commentText, setCommentText] = useState('');
   const [comments, setComments] = useState(prayerData.comments || []);
@@ -86,16 +87,28 @@ const GroupPrayerDetailScreen = ({ navigation, route }) => {
       });
       
       if (response.success) {
-        // Create new comment with fallback values
         const newComment = {
           userId: response.data?.userId || 'unknown',
-          name: response.data?.name || 'Anonymous',
+          name: response.data?.name || 'You',
           email: response.data?.email || '',
           comment: commentText,
           createdAt: new Date().toISOString()
         };
         
+        // Update local comments
         setComments([...comments, newComment]);
+        
+        // Call the callback if it exists
+        if (onCommentAdded) {
+          onCommentAdded(newComment);
+        }
+        
+        // Also update navigation params for when user goes back
+        navigation.setParams({
+          updatedPrayerId: prayerData.id,
+          newComment: newComment
+        });
+        
         setCommentText('');
         
         // Scroll to bottom after adding comment
@@ -191,7 +204,7 @@ const GroupPrayerDetailScreen = ({ navigation, route }) => {
                 comments.map((comment, index) => (
                   <View key={`${comment.userId}-${index}`} style={styles.commentItem}>
                     <Text style={styles.commentUser}>
-                      {comment.name || 'Anonymous'}
+                      {comment.name || 'You'}
                     </Text>
                     <Text style={styles.commentText}>{comment.comment}</Text>
                     <Text style={styles.commentTime}>

@@ -60,17 +60,17 @@ const FeedPrayerDetailScreen = ({ navigation, route }) => {
     if (commentText.trim() === '') return;
     
     try {
-      const success = await onAddComment(commentText);
-      if (success && success.data && success.data.comment) {
-        const newComment = {
-          userId: success.data.comment.userId,
-          name: success.data.comment.name,
-          email: success.data.comment.email,
-          comment: success.data.comment.comment,
-          createdAt: success.data.comment.createdAt
+      const result = await onAddComment(commentText);
+      if (result?.success) {
+        const newComment = result.data?.comment || {
+          userId: "unknown",
+          name: "You",
+          email: "",
+          comment: commentText,
+          createdAt: new Date().toISOString()
         };
         
-        setComments([...comments, newComment]);
+        setComments(prev => [...prev, newComment]);
         setCommentText('');
         
         setTimeout(() => {
@@ -92,7 +92,6 @@ const FeedPrayerDetailScreen = ({ navigation, route }) => {
           source={require('../../assets/images/gradient-background.png')}
           style={{ width: '100%', height: '100%' }}
         >
-          {/* Header */}
           <Animated.View style={[styles.header, { transform: [{ translateY: headerAnim }] }]}>
             <View style={styles.headerContainer}>
               <View style={styles.headerIconBox}>
@@ -112,7 +111,6 @@ const FeedPrayerDetailScreen = ({ navigation, route }) => {
             </View>
           </Animated.View>
 
-          {/* Content */}
           <ScrollView
             ref={scrollViewRef}
             contentContainerStyle={styles.contentContainer}
@@ -128,14 +126,9 @@ const FeedPrayerDetailScreen = ({ navigation, route }) => {
               <Text style={styles.prayerTitle}>{prayerData.title}</Text>
               <Text style={styles.prayerDescription}>{prayerData.description}</Text>
               
-              {/* Like and Comment Count */}
               <View style={styles.statsContainer}>
                 <View style={styles.statItem}>
-                  <AntDesign 
-                    name="heart" 
-                    size={20} 
-                    color={ThemeColors.WHITE} 
-                  />
+                  <AntDesign name="heart" size={20} color={ThemeColors.WHITE} />
                   <Text style={styles.statText}>{prayerData.likeCount || 0}</Text>
                 </View>
                 
@@ -150,13 +143,12 @@ const FeedPrayerDetailScreen = ({ navigation, route }) => {
               </View>
             </View>
 
-            {/* Comments Section */}
             <View style={styles.commentsSection}>
               <Text style={styles.commentsTitle}>Comments ({comments.length})</Text>
               
               {comments.length > 0 ? (
-                comments.map((comment) => (
-                  <View key={`${comment.userId}-${comment.createdAt}`} style={styles.commentItem}>
+                comments.map((comment, index) => (
+                  <View key={`${comment.userId}-${comment.createdAt}-${index}`} style={styles.commentItem}>
                     <Text style={styles.commentUser}>{comment.name}</Text>
                     <Text style={styles.commentText}>{comment.comment}</Text>
                     <Text style={styles.commentTime}>
@@ -170,7 +162,6 @@ const FeedPrayerDetailScreen = ({ navigation, route }) => {
             </View>
           </ScrollView>
 
-          {/* Comment Input */}
           <View style={styles.commentInputContainer}>
             <TextInput
               style={styles.commentInput}

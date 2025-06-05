@@ -72,7 +72,7 @@ const ActiveGroupScreen = ({navigation, route}) => {
           isLiked: prayer.isLiked || prayer.isLike || false,
           comments: (prayer.comments || []).map(comment => ({
             ...comment,
-            name: comment.name || 'Anonymous'
+            name: comment.name || 'You'
           }))
         }));
         setPrayers(prayersWithLikeStatus || []);
@@ -83,6 +83,30 @@ const ActiveGroupScreen = ({navigation, route}) => {
       setLoading(false);
     }
   };
+
+  // Handle comment updates from GroupPrayerDetailScreen
+  useEffect(() => {
+    if (route.params?.updatedPrayerId && route.params?.newComment) {
+      setPrayers(prevPrayers => 
+        prevPrayers.map(prayer => {
+          if (prayer._id === route.params.updatedPrayerId) {
+            return {
+              ...prayer,
+              commentCount: (prayer.commentCount || 0) + 1,
+              comments: [...(prayer.comments || []), route.params.newComment]
+            };
+          }
+          return prayer;
+        })
+      );
+      
+      // Clear the params to avoid duplicate updates
+      navigation.setParams({
+        updatedPrayerId: undefined,
+        newComment: undefined
+      });
+    }
+  }, [route.params?.updatedPrayerId, route.params?.newComment]);
 
   const loadMorePrayers = async () => {
     if (currentPage >= totalPages) return;
@@ -209,7 +233,7 @@ const ActiveGroupScreen = ({navigation, route}) => {
           if (prayer._id === prayerId) {
             const newComment = {
               userId: response.data?.userId || 'unknown',
-              name: response.data?.name || 'Anonymous',
+              name: response.data?.name || 'You',
               email: response.data?.email || '',
               comment: commentText,
               createdAt: new Date().toISOString()
@@ -416,7 +440,7 @@ const ActiveGroupScreen = ({navigation, route}) => {
                   size={15}
                 />
               </TouchableOpacity>
-              {groupDetail?.isAdmin && (
+              {/* {groupDetail?.isAdmin && (
                 <TouchableOpacity
                   onPress={() => {
                     OpenCommentSheet();
@@ -449,7 +473,7 @@ const ActiveGroupScreen = ({navigation, route}) => {
                     </View>
                   )}
                 </TouchableOpacity>
-              )}
+              )} */}
             </View>
           </View>
           <View style={localStyles.creatorContainer}>
@@ -499,7 +523,21 @@ const ActiveGroupScreen = ({navigation, route}) => {
                   comments: prayer.comments || [],
                   isLiked: prayer.isLiked || prayer.isLike || false
                 },
-                title: groupDetail.name
+                title: groupDetail.name,
+                onCommentAdded: (newComment) => {
+                  setPrayers(prevPrayers => 
+                    prevPrayers.map(p => {
+                      if (p._id === prayer._id) {
+                        return {
+                          ...p,
+                          commentCount: (p.commentCount || 0) + 1,
+                          comments: [...(p.comments || []), newComment]
+                        };
+                      }
+                      return p;
+                    })
+                  );
+                }
               })}
               activeOpacity={0.8}
             >
@@ -549,7 +587,21 @@ const ActiveGroupScreen = ({navigation, route}) => {
                         comments: prayer.comments || [],
                         isLiked: prayer.isLiked || prayer.isLike || false
                       },
-                      title: groupDetail.name
+                      title: groupDetail.name,
+                      onCommentAdded: (newComment) => {
+                        setPrayers(prevPrayers => 
+                          prevPrayers.map(p => {
+                            if (p._id === prayer._id) {
+                              return {
+                                ...p,
+                                commentCount: (p.commentCount || 0) + 1,
+                                comments: [...(p.comments || []), newComment]
+                              };
+                            }
+                            return p;
+                          })
+                        );
+                      }
                     })}
                     style={[localStyles.actionButton, {marginLeft: 10}]}>
                     {commentLoading[prayer._id] ? (
