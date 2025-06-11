@@ -110,7 +110,7 @@ const SignInScreen = ({ navigation }) => {
               <Text style={styles.SignUpText2}> Sign Up</Text>
             </TouchableOpacity>
           </View>
-          <View style={styles.SocialLoginContainer}>
+          {/* <View style={styles.SocialLoginContainer}>
             <View style={styles.SocialLoginCircleContainer}>
               <FontAwesome5Pro
                 name="apple"
@@ -132,7 +132,7 @@ const SignInScreen = ({ navigation }) => {
                 size={20}
               />
             </View>
-          </View>
+          </View> */}
         </View>
       </View>
     </ScrollView>

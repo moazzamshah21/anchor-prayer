@@ -136,7 +136,7 @@ const SignUpScreen = ({ navigation }) => {
               <Text style={styles.SignInText2}> Sign In</Text>
             </TouchableOpacity>
           </View>
-          <View style={styles.SocialLoginContainer}>
+          {/* <View style={styles.SocialLoginContainer}>
             <View style={styles.SocialLoginCircleContainer}>
               <FontAwesome5Pro name="apple" style={{ color: ThemeColors.WHITE }} size={20} />
             </View>
@@ -146,7 +146,7 @@ const SignUpScreen = ({ navigation }) => {
             <View style={styles.SocialLoginCircleContainer}>
               <FontAwesome5Pro name="google" style={{ color: ThemeColors.WHITE }} size={20} />
             </View>
-          </View>
+          </View> */}
         </View>
       </View>
     </ScrollView>

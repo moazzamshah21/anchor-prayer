@@ -86,175 +86,173 @@ const DonationScreen = ({ navigation, route }) => {
   };
 
   return (
-    <React.Fragment>
-      <BackHeader navigation={navigation} title="Donation" />
-      <ScrollView
-        contentContainerStyle={styles.ScrollViewContentContainerStyle}
-        showsVerticalScrollIndicator={false}>
-        <View style={styles.MainContainer}>
-          <View style={{ marginTop: 40 }}>
-            <Text style={styles.DonateUsText}>Donate Us</Text>
-            <View
-              style={{
-                marginTop: 20,
-                flexDirection: 'row',
-                alignSelf: 'center',
-              }}>
-              <TouchableOpacity
-                onPress={() => {
-                  setDonationAmount('10');
-                }}
-                style={[
-                  styles.DonatePriceView,
-                  {
-                    borderWidth: 1,
-                    borderColor:
-                      donationAmount == '10' ? 'green' : ThemeColors?.DARK_GRAY,
-                  },
-                ]}>
-                <Text style={styles.DonatePriceText}>$10</Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                onPress={() => {
-                  setDonationAmount('30');
-                }}
-                style={[
-                  styles.DonatePriceView,
-                  {
-                    borderWidth: 1,
-                    borderColor:
-                      donationAmount == '30' ? 'green' : ThemeColors?.DARK_GRAY,
-                  },
-                ]}>
-                <Text style={styles.DonatePriceText}>$30</Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                onPress={() => {
-                  setDonationAmount('50');
-                }}
-                style={[
-                  styles.DonatePriceView,
-                  {
-                    borderWidth: 1,
-                    borderColor:
-                      donationAmount == '50' ? 'green' : ThemeColors?.DARK_GRAY,
-                  },
-                ]}>
-                <Text style={styles.DonatePriceText}>$50</Text>
-              </TouchableOpacity>
-            </View>
-            <View
-              style={{
-                marginTop: 20,
-                flexDirection: 'row',
-                alignSelf: 'center',
-              }}>
-              <TouchableOpacity
-                onPress={() => {
-                  setDonationAmount('70');
-                }}
-                style={[
-                  styles.DonatePriceView,
-                  {
-                    borderWidth: 1,
-                    borderColor:
-                      donationAmount == '70' ? 'green' : ThemeColors?.DARK_GRAY,
-                  },
-                ]}>
-                <Text style={styles.DonatePriceText}>$70</Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                onPress={() => {
-                  setDonationAmount('90');
-                }}
-                style={[
-                  styles.DonatePriceView,
-                  {
-                    borderWidth: 1,
-                    borderColor:
-                      donationAmount == '90' ? 'green' : ThemeColors?.DARK_GRAY,
-                  },
-                ]}>
-                <Text style={styles.DonatePriceText}>$90</Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                onPress={() => {
-                  setDonationAmount('110');
-                }}
-                style={[
-                  styles.DonatePriceView,
-                  {
-                    borderWidth: 1,
-                    borderColor:
-                      donationAmount == '110'
-                        ? 'green'
-                        : ThemeColors?.DARK_GRAY,
-                  },
-                ]}>
-                <Text style={styles.DonatePriceText}>$110</Text>
-              </TouchableOpacity>
-            </View>
+    <ScrollView
+      contentContainerStyle={styles.ScrollViewContentContainerStyle}
+      showsVerticalScrollIndicator={false}>
+      <View style={styles.MainContainer}>
+        <BackHeader navigation={navigation} title="Donation" />
+        
+        <View style={{ marginTop: 40 }}>
+          <Text style={styles.DonateUsText}>Donate Us</Text>
+          <View
+            style={{
+              marginTop: 20,
+              flexDirection: 'row',
+              alignSelf: 'center',
+            }}>
+            <TouchableOpacity
+              onPress={() => {
+                setDonationAmount('10');
+              }}
+              style={[
+                styles.DonatePriceView,
+                {
+                  borderWidth: 1,
+                  borderColor:
+                    donationAmount == '10' ? 'green' : ThemeColors?.DARK_GRAY,
+                },
+              ]}>
+              <Text style={styles.DonatePriceText}>$10</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => {
+                setDonationAmount('30');
+              }}
+              style={[
+                styles.DonatePriceView,
+                {
+                  borderWidth: 1,
+                  borderColor:
+                    donationAmount == '30' ? 'green' : ThemeColors?.DARK_GRAY,
+                },
+              ]}>
+              <Text style={styles.DonatePriceText}>$30</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => {
+                setDonationAmount('50');
+              }}
+              style={[
+                styles.DonatePriceView,
+                {
+                  borderWidth: 1,
+                  borderColor:
+                    donationAmount == '50' ? 'green' : ThemeColors?.DARK_GRAY,
+                },
+              ]}>
+              <Text style={styles.DonatePriceText}>$50</Text>
+            </TouchableOpacity>
           </View>
-
-          <View style={{ marginTop: 50, paddingHorizontal: 40 }}>
-            <View>
-              <Text style={styles.GiftText}>Or, your best gift</Text>
-              <TextInput
-                style={{
-                  borderRadius: 10,
-                  borderColor: ThemeColors?.DARK_GRAY,
+          <View
+            style={{
+              marginTop: 20,
+              flexDirection: 'row',
+              alignSelf: 'center',
+            }}>
+            <TouchableOpacity
+              onPress={() => {
+                setDonationAmount('70');
+              }}
+              style={[
+                styles.DonatePriceView,
+                {
                   borderWidth: 1,
-                  paddingVertical: 15,
-                  marginTop: 5,
-                  fontSize: 18,
-                  color: ThemeColors.BLACK,
-                  fontFamily: ThemeFonts.REGULAR,
-                  paddingHorizontal: 10,
-                }}
-                value={donationAmount}
-                onChangeText={x => setDonationAmount(x)}
-                keyboardType="number-pad"
-              />
-            </View>
-
-            <View style={{ marginTop: 20 }}>
-              <Text style={styles.GiftText}>Email Address</Text>
-              <TextInput
-                style={{
-                  borderRadius: 10,
-                  borderColor: ThemeColors?.DARK_GRAY,
+                  borderColor:
+                    donationAmount == '70' ? 'green' : ThemeColors?.DARK_GRAY,
+                },
+              ]}>
+              <Text style={styles.DonatePriceText}>$70</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => {
+                setDonationAmount('90');
+              }}
+              style={[
+                styles.DonatePriceView,
+                {
                   borderWidth: 1,
-                  paddingVertical: 15,
-                  marginTop: 5,
-                  fontSize: 18,
-                  color: ThemeColors.BLACK,
-                  fontFamily: ThemeFonts.REGULAR,
-                  paddingHorizontal: 10,
-                }}
-                value={email}
-                onChangeText={x => setEmail(x)}
-              />
-            </View>
-
-            <View style={{ marginTop: 40 }}>
-              <TouchableOpacity
-                onPress={onPressDonateNow}
-                style={styles.DonateNowBtn}>
-                <Text style={styles.DonateNowBtnText}>Donate Now</Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                onPress={() => {
-                  navigation.navigate('DonationListScreen');
-                }}
-                style={styles.DonateNowBtn2}>
-                <Text style={styles.DonateNowBtnText2}>Donation history</Text>
-              </TouchableOpacity>
-            </View>
+                  borderColor:
+                    donationAmount == '90' ? 'green' : ThemeColors?.DARK_GRAY,
+                },
+              ]}>
+              <Text style={styles.DonatePriceText}>$90</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => {
+                setDonationAmount('110');
+              }}
+              style={[
+                styles.DonatePriceView,
+                {
+                  borderWidth: 1,
+                  borderColor:
+                    donationAmount == '110'
+                      ? 'green'
+                      : ThemeColors?.DARK_GRAY,
+                },
+              ]}>
+              <Text style={styles.DonatePriceText}>$110</Text>
+            </TouchableOpacity>
           </View>
         </View>
 
-      </ScrollView>
-    </React.Fragment>
+        <View style={{ marginTop: 50, paddingHorizontal: 40 }}>
+          <View>
+            <Text style={styles.GiftText}>Or, your best gift</Text>
+            <TextInput
+              style={{
+                borderRadius: 10,
+                borderColor: ThemeColors?.DARK_GRAY,
+                borderWidth: 1,
+                paddingVertical: 15,
+                marginTop: 5,
+                fontSize: 18,
+                color: ThemeColors.BLACK,
+                fontFamily: ThemeFonts.REGULAR,
+                paddingHorizontal: 10,
+              }}
+              value={donationAmount}
+              onChangeText={x => setDonationAmount(x)}
+              keyboardType="number-pad"
+            />
+          </View>
+
+          <View style={{ marginTop: 20 }}>
+            <Text style={styles.GiftText}>Email Address</Text>
+            <TextInput
+              style={{
+                borderRadius: 10,
+                borderColor: ThemeColors?.DARK_GRAY,
+                borderWidth: 1,
+                paddingVertical: 15,
+                marginTop: 5,
+                fontSize: 18,
+                color: ThemeColors.BLACK,
+                fontFamily: ThemeFonts.REGULAR,
+                paddingHorizontal: 10,
+              }}
+              value={email}
+              onChangeText={x => setEmail(x)}
+            />
+          </View>
+
+          <View style={{ marginTop: 40, marginBottom: 40 }}>
+            <TouchableOpacity
+              onPress={onPressDonateNow}
+              style={styles.DonateNowBtn}>
+              <Text style={styles.DonateNowBtnText}>Donate Now</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => {
+                navigation.navigate('DonationListScreen');
+              }}
+              style={styles.DonateNowBtn2}>
+              <Text style={styles.DonateNowBtnText2}>Donation history</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </View>
+    </ScrollView>
   );
 };
 
