@@ -11,9 +11,9 @@
 		13B07FBC1A68108700A75B9A /* AppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.mm */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
+		1B6289A6553AF3215E7F7A3E /* libPods-AnchorPrayer-AnchorPrayerTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D36111C3DF1633E657EC681F /* libPods-AnchorPrayer-AnchorPrayerTests.a */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
-		B9B91A95A6FAD57CCF3A91B7 /* libPods-AnchorPrayer.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D28C990E1D93DDC730D1D487 /* libPods-AnchorPrayer.a */; };
-		D0B8A1ED12970A7F40DD8A9D /* libPods-AnchorPrayer-AnchorPrayerTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A099DF73EBE1DC795222270 /* libPods-AnchorPrayer-AnchorPrayerTests.a */; };
+		91AE2C04A28E8443BC019787 /* libPods-AnchorPrayer.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F938740DF6AE6BBD00BC2F54 /* libPods-AnchorPrayer.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -36,14 +36,14 @@
 		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = AnchorPrayer/Images.xcassets; sourceTree = "<group>"; };
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = AnchorPrayer/Info.plist; sourceTree = "<group>"; };
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = AnchorPrayer/main.m; sourceTree = "<group>"; };
-		62A346C99417767C4C97616A /* Pods-AnchorPrayer.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AnchorPrayer.release.xcconfig"; path = "Target Support Files/Pods-AnchorPrayer/Pods-AnchorPrayer.release.xcconfig"; sourceTree = "<group>"; };
-		7A099DF73EBE1DC795222270 /* libPods-AnchorPrayer-AnchorPrayerTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-AnchorPrayer-AnchorPrayerTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		58800056CA70C0597B9DEC80 /* Pods-AnchorPrayer.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AnchorPrayer.debug.xcconfig"; path = "Target Support Files/Pods-AnchorPrayer/Pods-AnchorPrayer.debug.xcconfig"; sourceTree = "<group>"; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = AnchorPrayer/LaunchScreen.storyboard; sourceTree = "<group>"; };
-		A0A91FDFE337F223231C6953 /* Pods-AnchorPrayer-AnchorPrayerTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AnchorPrayer-AnchorPrayerTests.release.xcconfig"; path = "Target Support Files/Pods-AnchorPrayer-AnchorPrayerTests/Pods-AnchorPrayer-AnchorPrayerTests.release.xcconfig"; sourceTree = "<group>"; };
-		A1191450973E4593BB6DFA95 /* Pods-AnchorPrayer.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AnchorPrayer.debug.xcconfig"; path = "Target Support Files/Pods-AnchorPrayer/Pods-AnchorPrayer.debug.xcconfig"; sourceTree = "<group>"; };
-		B379E61DAFA68AD8149C5170 /* Pods-AnchorPrayer-AnchorPrayerTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AnchorPrayer-AnchorPrayerTests.debug.xcconfig"; path = "Target Support Files/Pods-AnchorPrayer-AnchorPrayerTests/Pods-AnchorPrayer-AnchorPrayerTests.debug.xcconfig"; sourceTree = "<group>"; };
-		D28C990E1D93DDC730D1D487 /* libPods-AnchorPrayer.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-AnchorPrayer.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		A565A832BF785BDD33DDB4BE /* Pods-AnchorPrayer-AnchorPrayerTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AnchorPrayer-AnchorPrayerTests.debug.xcconfig"; path = "Target Support Files/Pods-AnchorPrayer-AnchorPrayerTests/Pods-AnchorPrayer-AnchorPrayerTests.debug.xcconfig"; sourceTree = "<group>"; };
+		A60878CF7D96B7B1BC5DDA4D /* Pods-AnchorPrayer.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AnchorPrayer.release.xcconfig"; path = "Target Support Files/Pods-AnchorPrayer/Pods-AnchorPrayer.release.xcconfig"; sourceTree = "<group>"; };
+		D36111C3DF1633E657EC681F /* libPods-AnchorPrayer-AnchorPrayerTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-AnchorPrayer-AnchorPrayerTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		E3AFF18570527A9B920EB93F /* Pods-AnchorPrayer-AnchorPrayerTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AnchorPrayer-AnchorPrayerTests.release.xcconfig"; path = "Target Support Files/Pods-AnchorPrayer-AnchorPrayerTests/Pods-AnchorPrayer-AnchorPrayerTests.release.xcconfig"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
+		F938740DF6AE6BBD00BC2F54 /* libPods-AnchorPrayer.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-AnchorPrayer.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		FA0CBE842DF41F820090559F /* AnchorPrayerRelease.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = AnchorPrayerRelease.entitlements; path = AnchorPrayer/AnchorPrayerRelease.entitlements; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -52,7 +52,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D0B8A1ED12970A7F40DD8A9D /* libPods-AnchorPrayer-AnchorPrayerTests.a in Frameworks */,
+				1B6289A6553AF3215E7F7A3E /* libPods-AnchorPrayer-AnchorPrayerTests.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -60,7 +60,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B9B91A95A6FAD57CCF3A91B7 /* libPods-AnchorPrayer.a in Frameworks */,
+				91AE2C04A28E8443BC019787 /* libPods-AnchorPrayer.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -102,8 +102,8 @@
 			isa = PBXGroup;
 			children = (
 				ED297162215061F000B7C4FE /* JavaScriptCore.framework */,
-				D28C990E1D93DDC730D1D487 /* libPods-AnchorPrayer.a */,
-				7A099DF73EBE1DC795222270 /* libPods-AnchorPrayer-AnchorPrayerTests.a */,
+				F938740DF6AE6BBD00BC2F54 /* libPods-AnchorPrayer.a */,
+				D36111C3DF1633E657EC681F /* libPods-AnchorPrayer-AnchorPrayerTests.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -142,10 +142,10 @@
 		BBD78D7AC51CEA395F1C20DB /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				A1191450973E4593BB6DFA95 /* Pods-AnchorPrayer.debug.xcconfig */,
-				62A346C99417767C4C97616A /* Pods-AnchorPrayer.release.xcconfig */,
-				B379E61DAFA68AD8149C5170 /* Pods-AnchorPrayer-AnchorPrayerTests.debug.xcconfig */,
-				A0A91FDFE337F223231C6953 /* Pods-AnchorPrayer-AnchorPrayerTests.release.xcconfig */,
+				58800056CA70C0597B9DEC80 /* Pods-AnchorPrayer.debug.xcconfig */,
+				A60878CF7D96B7B1BC5DDA4D /* Pods-AnchorPrayer.release.xcconfig */,
+				A565A832BF785BDD33DDB4BE /* Pods-AnchorPrayer-AnchorPrayerTests.debug.xcconfig */,
+				E3AFF18570527A9B920EB93F /* Pods-AnchorPrayer-AnchorPrayerTests.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -157,12 +157,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 00E357021AD99517003FC87E /* Build configuration list for PBXNativeTarget "AnchorPrayerTests" */;
 			buildPhases = (
-				E78C7240A8C3094353C77141 /* [CP] Check Pods Manifest.lock */,
+				320D0F096E027FA0C084375B /* [CP] Check Pods Manifest.lock */,
 				00E356EA1AD99517003FC87E /* Sources */,
 				00E356EB1AD99517003FC87E /* Frameworks */,
 				00E356EC1AD99517003FC87E /* Resources */,
-				12E16650F6E2735E814B0883 /* [CP] Embed Pods Frameworks */,
-				9CBAADBFFD8AD85FDC0866FB /* [CP] Copy Pods Resources */,
+				1AFAED4CB67AEE2A633A06C1 /* [CP] Embed Pods Frameworks */,
+				04602CF435C476D5F705A9B4 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -178,13 +178,13 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "AnchorPrayer" */;
 			buildPhases = (
-				532271BA212A855D4E1A0375 /* [CP] Check Pods Manifest.lock */,
+				B10ED53AE40293AC89AFE8C2 /* [CP] Check Pods Manifest.lock */,
 				13B07F871A680F5B00A75B9A /* Sources */,
 				13B07F8C1A680F5B00A75B9A /* Frameworks */,
 				13B07F8E1A680F5B00A75B9A /* Resources */,
 				00DD1BFF1BD5951E006B06BC /* Bundle React Native code and images */,
-				2FBC43D1ED79AFEBAA39EF93 /* [CP] Embed Pods Frameworks */,
-				6D633612088F2D2247264570 /* [CP] Copy Pods Resources */,
+				529F73F595A082C234F45BF4 /* [CP] Embed Pods Frameworks */,
+				9F4909AA12A671D6143918CD /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -267,80 +267,7 @@
 			shellPath = /bin/sh;
 			shellScript = "set -e\n\nWITH_ENVIRONMENT=\"../node_modules/react-native/scripts/xcode/with-environment.sh\"\nREACT_NATIVE_XCODE=\"../node_modules/react-native/scripts/react-native-xcode.sh\"\n\n/bin/sh -c \"$WITH_ENVIRONMENT $REACT_NATIVE_XCODE\"\n";
 		};
-		12E16650F6E2735E814B0883 /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-AnchorPrayer-AnchorPrayerTests/Pods-AnchorPrayer-AnchorPrayerTests-frameworks-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-AnchorPrayer-AnchorPrayerTests/Pods-AnchorPrayer-AnchorPrayerTests-frameworks-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-AnchorPrayer-AnchorPrayerTests/Pods-AnchorPrayer-AnchorPrayerTests-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		2FBC43D1ED79AFEBAA39EF93 /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-AnchorPrayer/Pods-AnchorPrayer-frameworks-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-AnchorPrayer/Pods-AnchorPrayer-frameworks-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-AnchorPrayer/Pods-AnchorPrayer-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		532271BA212A855D4E1A0375 /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-AnchorPrayer-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		6D633612088F2D2247264570 /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-AnchorPrayer/Pods-AnchorPrayer-resources-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Copy Pods Resources";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-AnchorPrayer/Pods-AnchorPrayer-resources-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-AnchorPrayer/Pods-AnchorPrayer-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		9CBAADBFFD8AD85FDC0866FB /* [CP] Copy Pods Resources */ = {
+		04602CF435C476D5F705A9B4 /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -357,7 +284,24 @@
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-AnchorPrayer-AnchorPrayerTests/Pods-AnchorPrayer-AnchorPrayerTests-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		E78C7240A8C3094353C77141 /* [CP] Check Pods Manifest.lock */ = {
+		1AFAED4CB67AEE2A633A06C1 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-AnchorPrayer-AnchorPrayerTests/Pods-AnchorPrayer-AnchorPrayerTests-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-AnchorPrayer-AnchorPrayerTests/Pods-AnchorPrayer-AnchorPrayerTests-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-AnchorPrayer-AnchorPrayerTests/Pods-AnchorPrayer-AnchorPrayerTests-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		320D0F096E027FA0C084375B /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -373,6 +317,62 @@
 			);
 			outputPaths = (
 				"$(DERIVED_FILE_DIR)/Pods-AnchorPrayer-AnchorPrayerTests-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		529F73F595A082C234F45BF4 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-AnchorPrayer/Pods-AnchorPrayer-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-AnchorPrayer/Pods-AnchorPrayer-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-AnchorPrayer/Pods-AnchorPrayer-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		9F4909AA12A671D6143918CD /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-AnchorPrayer/Pods-AnchorPrayer-resources-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-AnchorPrayer/Pods-AnchorPrayer-resources-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-AnchorPrayer/Pods-AnchorPrayer-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		B10ED53AE40293AC89AFE8C2 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-AnchorPrayer-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -412,7 +412,7 @@
 /* Begin XCBuildConfiguration section */
 		00E356F61AD99517003FC87E /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = B379E61DAFA68AD8149C5170 /* Pods-AnchorPrayer-AnchorPrayerTests.debug.xcconfig */;
+			baseConfigurationReference = A565A832BF785BDD33DDB4BE /* Pods-AnchorPrayer-AnchorPrayerTests.debug.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				GCC_PREPROCESSOR_DEFINITIONS = (
@@ -439,7 +439,7 @@
 		};
 		00E356F71AD99517003FC87E /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = A0A91FDFE337F223231C6953 /* Pods-AnchorPrayer-AnchorPrayerTests.release.xcconfig */;
+			baseConfigurationReference = E3AFF18570527A9B920EB93F /* Pods-AnchorPrayer-AnchorPrayerTests.release.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				COPY_PHASE_STRIP = NO;
@@ -463,7 +463,7 @@
 		};
 		13B07F941A680F5B00A75B9A /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = A1191450973E4593BB6DFA95 /* Pods-AnchorPrayer.debug.xcconfig */;
+			baseConfigurationReference = 58800056CA70C0597B9DEC80 /* Pods-AnchorPrayer.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
@@ -491,7 +491,7 @@
 		};
 		13B07F951A680F5B00A75B9A /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 62A346C99417767C4C97616A /* Pods-AnchorPrayer.release.xcconfig */;
+			baseConfigurationReference = A60878CF7D96B7B1BC5DDA4D /* Pods-AnchorPrayer.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;

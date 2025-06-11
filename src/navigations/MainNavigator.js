@@ -190,7 +190,7 @@ const CustomDrawerContent = props => {
             </TouchableOpacity>
           </View>
 
-          {/* <View style={styles.MenuItem}>
+          <View style={styles.MenuItem}>
             <TouchableOpacity
               style={styles.MenuItemTouch}
               onPress={() => {
@@ -199,7 +199,7 @@ const CustomDrawerContent = props => {
               <DonnationIcon />
               <Text style={styles.MenuItemText}>Donations</Text>
             </TouchableOpacity>
-          </View> */}
+          </View>
           <View style={styles.MenuItem}>
             <TouchableOpacity
               style={styles.MenuItemTouch}

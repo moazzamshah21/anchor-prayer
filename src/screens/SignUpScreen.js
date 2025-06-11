@@ -97,7 +97,7 @@ const SignUpScreen = ({ navigation }) => {
     <ScrollView contentContainerStyle={styles.ScrollViewContentContainerStyle} showsVerticalScrollIndicator={false}>
       <View style={styles.MainContainer}>
         <View style={styles.LogoContainer}>
-          <Image source={require('../../assets/images/Logo.png')} style={{ width: 250, height: 150 }} resizeMode='center' />
+          <Image source={require('../../assets/images/Logo.png')} style={{ width: 250, height: 150 }} resizeMode='contain' />
         </View>
         <View style={styles.ContentContainer}>
           <TextBox

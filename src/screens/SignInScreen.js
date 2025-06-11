@@ -79,7 +79,7 @@ const SignInScreen = ({ navigation }) => {
           <Image
             source={require('../../assets/images/Logo.png')}
             style={{ width: 250, height: 150 }}
-            resizeMode="center"
+            resizeMode="contain"
           />
         </View>
         <View style={styles.ContentContainer}>

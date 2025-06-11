@@ -35,8 +35,8 @@ const GroupScreen = ({navigation, route}) => {
                 navigation.navigate('CreateGroupScreen');
               }}>
               <Image
-                resizeMode={'center'}
-                style={styles.AddIconImage}
+                resizeMode={'contain'}
+                style={{...styles.AddIconImage, width: 97, height: 85 }}
                 source={require('../../assets/images/add-icon.png')}
               />
             </TouchableOpacity>

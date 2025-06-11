@@ -23,7 +23,7 @@ const ReminderScreen = ({navigation, route}) => {
         <View style={styles.MainContainer}>
           <View style={styles.MainBody}>
             <Image
-              resizeMode={'center'}
+              resizeMode={'contain'}
               style={styles.MainIconImage}
               source={require('../../assets/images/edit-icon.png')}
             />

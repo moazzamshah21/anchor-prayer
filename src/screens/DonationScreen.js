@@ -252,11 +252,7 @@ const DonationScreen = ({ navigation, route }) => {
             </View>
           </View>
         </View>
-        <View style={{ alignItems: 'center' }}>
-          <Text style={styles.LogoText}>
-            Designed by:{'\n'}digitalsoftwarelabs.com
-          </Text>
-        </View>
+
       </ScrollView>
     </React.Fragment>
   );
